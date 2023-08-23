@@ -29,6 +29,14 @@
       },
       "minItems": 1
     },
+    "csv_delimiter": {
+      "type": "string",
+      "enum": [
+        ",",
+        ";"
+      ],
+      "default": ";"
+    },
     "vocabularies": {
       "type": "array",
       "items": {
@@ -38,10 +46,6 @@
             "type": "string",
             "pattern": "^[0-9a-zA-Z_]+$",
             "description": "Identifier for the vocabulary as part of the uri"
-          },
-          "filename": {
-            "type": "string",
-            "description": "Name of the CSV file containing the voc entries"
           },
           "title": {
             "type": "array",
@@ -83,7 +87,7 @@
             "description": "Description of vocabulary"
           }
         },
-        "required": ["id", "filename", "title"]
+        "required": ["id", "title"]
       },
       "minItems": 1
     }
