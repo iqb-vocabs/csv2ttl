@@ -1,0 +1,21 @@
+{
+  "id": "i2",
+  "title": [
+    {
+      "lang": "de",
+      "value": "title"
+    }
+  ],
+  "vocabularies": [
+    {
+      "id": "id",
+      "filename": "filename",
+      "title": [
+        {
+          "lang": "de",
+          "value": "title"
+        }
+      ]
+    }
+  ]
+}
