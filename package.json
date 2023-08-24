@@ -24,6 +24,7 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "csv-parse": "^5.4.0"
+    "csv-parse": "^5.4.0",
+    "rdflib": "^2.2.32"
   }
 }
