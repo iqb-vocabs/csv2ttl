@@ -28,6 +28,7 @@ if (fs.existsSync(config_filename)) {
     config_data.vocabularies.forEach((voc: any) => {
         const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
         if (voc_filename) {
+            console.log(`Processing '${voc_filename}'`);
             const data_raw = fs.readFileSync(voc_filename, 'utf8');
             const data = csv_parse(data_raw, {
                 columns: true,
@@ -35,6 +36,8 @@ if (fs.existsSync(config_filename)) {
                 delimiter: csvDelimiter
             });
             if (data && data.length > 0) {
+                console.log(`${data.length} records found`);
+                /***
                 console.log(`Processing '${voc_filename}'`);
                 const g = rdflib.graph();
                 data.forEach((d: any) => {
@@ -48,6 +51,7 @@ if (fs.existsSync(config_filename)) {
                     // f.add(new );
                 });
                 console.log(g.serialize(rdflib.uri('yoyo.htm'), 'turtle', ''));
+                 ***/
             } else {
                 console.log(`\x1b[0;31mERROR\x1b[0m File '${voc_filename}' empty`);
             }
