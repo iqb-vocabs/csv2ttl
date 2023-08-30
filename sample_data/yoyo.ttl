@@ -1,0 +1,84 @@
+@prefix : <#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix iqb: <./>.
+@prefix n0: <http://purl.org/dc/terms/#>.
+@prefix en1: <en1/>.
+
+iqb:en1
+    a skos:ConceptScheme;
+    n0:creator "IQB - Institut zur Qualit\u00e4tsentwicklung im Bildungswesen";
+    n0:title "en1";
+    skos:hasTopConcept
+        en1:a390d01a-4000-11ee-995d-484d7ea9e46c,
+        en1:a390d01b-4000-11ee-8ae1-484d7ea9e46c,
+        en1:a390d01c-4000-11ee-89cb-484d7ea9e46c,
+        en1:a390d01d-4000-11ee-b176-484d7ea9e46c,
+        en1:a390d01e-4000-11ee-97ba-484d7ea9e46c,
+        en1:a390d01f-4000-11ee-be61-484d7ea9e46c,
+        en1:a390d020-4000-11ee-a23e-484d7ea9e46c,
+        en1:a390d021-4000-11ee-a089-484d7ea9e46c,
+        en1:a390d022-4000-11ee-a549-484d7ea9e46c,
+        en1:a390d023-4000-11ee-9d62-484d7ea9e46c,
+        en1:a390d024-4000-11ee-9424-484d7ea9e46c,
+        en1:a390d025-4000-11ee-83e8-484d7ea9e46c.
+en1:a390d01a-4000-11ee-995d-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "1";
+    skos:preLabel "gap-filling";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d01b-4000-11ee-8ae1-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "2";
+    skos:preLabel "multiple choice";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d01c-4000-11ee-89cb-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "3";
+    skos:preLabel "multiple matching";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d01d-4000-11ee-b176-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "4";
+    skos:preLabel "note taking";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d01e-4000-11ee-97ba-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "5";
+    skos:preLabel "sentence completion";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d01f-4000-11ee-be61-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "6";
+    skos:preLabel "sequencing";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d020-4000-11ee-a23e-484d7ea9e46c
+    a skos:Concept;
+    skos:description "Kurzantwort";
+    skos:notation "7";
+    skos:preLabel "short answer";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d021-4000-11ee-a089-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "8";
+    skos:preLabel "table completion";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d022-4000-11ee-a549-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "9";
+    skos:preLabel "true-false";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d023-4000-11ee-9d62-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "10";
+    skos:preLabel "true-false-justification";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d024-4000-11ee-9424-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "11";
+    skos:preLabel "true-false-line";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
+en1:a390d025-4000-11ee-83e8-484d7ea9e46c
+    a skos:Concept;
+    skos:notation "12";
+    skos:preLabel "true-false-not given";
+    skos:topConceptOf "https://w3id.org/iqb/en1".
