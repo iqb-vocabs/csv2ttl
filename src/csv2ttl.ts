@@ -25,6 +25,10 @@ if (fs.existsSync(config_filename)) {
         fileList[file.toUpperCase()] = `${data_folder}/${file}`;
     });
 
+    if (!fs.existsSync('./dist')){
+        fs.mkdirSync('./dist');
+    }
+    
     const csvDelimiter = config_data.csv_delimiter || ';';
     config_data.vocabularies.forEach((voc: any) => {
         const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
