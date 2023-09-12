@@ -6,7 +6,7 @@
   "description": "Data interfaces for verona related assessment applications",
   "scripts": {
     "test": "ts-node test_schema.ts",
-    "run": "ts-node src/addidcsv.ts sample_data"
+    "run": "ts-node src/csv2ttl.ts sample_data"
   },
   "repository": {
     "type": "git",
