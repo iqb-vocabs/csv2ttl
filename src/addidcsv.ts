@@ -1,9 +1,14 @@
 import { parse as csv_parse} from 'csv-parse/sync';
 import {Namespace, graph, literal, NamedNode} from "rdflib";
+import {getRandomValues} from "crypto";
 
 // the library we need
 const fs = require('fs');
 const rdflib = require('rdflib');
+const RandExp = require('randexp');
+const csv = require('csv-parser');
+var json2csv = require('json2csv').parse;
+
 
 const DCTERMS = Namespace("http://purl.org/dc/terms/")
 const RDF = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
@@ -21,9 +26,17 @@ function getNotationDeep(notation: string): number{
     return (notation.split(".")).length;
 }
 
+function generateId(): string {
+    return new RandExp(/^[2-9ABCDEFGHJKQRSTUVWXYZ]{2}/).gen();
+}
+
+function generateNumericId(old:number): string{
+    return String(old+1).padStart(3, '0');
+}
+
+
 // If the configuration is present
 if (fs.existsSync(config_filename)) {
-
     // Read the JSON configuration file
     const config_data_raw = fs.readFileSync(config_filename, 'utf8');
     const config_data = JSON.parse(config_data_raw);
@@ -34,6 +47,51 @@ if (fs.existsSync(config_filename)) {
         fileList[file.toUpperCase()] = `${data_folder}/${file}`;
     });
     const csvDelimiter = config_data.csv_delimiter || ';';
+
+
+    var fields = ['notation','title','description','id'];
+    var opts = {
+        fieldNames: fields,
+        quote: '',
+        delimiter:';'
+    };
+
+    //add id if it does not exist
+    let old = 0;
+    config_data.vocabularies.forEach((voc: any) => {
+        const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
+        console.log(`Processing '${voc_filename}'`);
+        if (voc_filename) {
+            console.log(`Processing '${voc_filename}'`);
+            const data_raw = fs.readFileSync(voc_filename, 'utf8');
+            const data = csv_parse(data_raw, {
+                columns: true,
+                skip_empty_lines: true,
+                delimiter: csvDelimiter
+            });
+            console.log()
+        let dataArray: any[];
+        dataArray = [];
+        fs.createReadStream(voc_filename)
+            .pipe(csv({separator:csvDelimiter}))
+            .on('data', function (row:any) {
+                if (row.id === "") {
+                    console.log("Generating new id");
+                    row.id = generateId();
+                    old++ ;
+                }
+                dataArray.push(row);
+            })
+            .on('end', () => {
+                var result = json2csv(dataArray,opts);
+                console.log(result);
+                console.log(typeof(result));
+                result = result.replaceAll(/"/g,'');
+                console.log(result);
+                fs.writeFileSync(voc_filename, result);
+            });
+    }
+    });
 
     // for each vocabular csv file: read the data and add the data to the graph
     config_data.vocabularies.forEach((voc: any) => {
@@ -62,10 +120,11 @@ if (fs.existsSync(config_filename)) {
                 let actualDeep = 1;
                 let urlStack: NamedNode[]=[];
                 let actualUrl = baseUrl;
-                let oldUrl=baseUrl;
+                let oldUrl= baseUrl;
                 urlStack.push(baseUrl);
 
                 data.forEach((d: any) => {
+
                     let deep = getNotationDeep(d.notation);
                     if (actualDeep == deep) {
                         // Case: same level
@@ -82,6 +141,7 @@ if (fs.existsSync(config_filename)) {
                         }
                         actualDeep = deep;
                     }
+
                     let oldUrl = urlStack[urlStack.length-1];      //get the last element and do not pop()
                     const newUrl = g.sym(base_url1+`/`+`${d.id}`);
                     g.add(newUrl, RDF('type'), SKOS('Concept') );

@@ -1,16 +1,15 @@
 notation;title;description;id
-1;Hörverstehen und audiovisuelles Verstehen;Bis zum Mittleren Schulabschluss erreichen die Schülerinnen und Schüler im Wesentlichen das Niveau B1 des Gemeinsamen europäischen Referenzrahmens.;51cee63e-3dc2-11ee-88b5-484d7ea9e46c
-1.1;in strukturell unkomplizierten Hörtexten zu vertrauten Themen das Thema erfassen und die Hauptaussagen und Einzelinformationen verstehen, wenn in deutlich artikulierter Standardsprache oder in einer vertrauten Varietät gesprochen wird.;;51cee63f-3dc2-11ee-9c1b-484d7ea9e46c
-1.2;auch in längeren Hörtexten Mitteilungen zu konkreten Themen verstehen.;;51cee640-3dc2-11ee-a298-484d7ea9e46c
-1.3;das Thema und die Hauptaussagen von längeren Gesprächen zwischen Anderen verstehen.;;51cee641-3dc2-11ee-b3aa-484d7ea9e46c
-1.4;Vorträge und Präsentationen verstehen und dabei zwischen Hauptaussagen und unterstützenden Details unterscheiden, wenn die Thematik vertraut und die Darstellung unkompliziert und klar strukturiert ist.;;51cee642-3dc2-11ee-a591-484d7ea9e46c
-1.5;bei längeren Hörtexten und audiovisuellen Texten anhand des erfassten Themas Vorhersagen über den weiteren Inhalt treffen und diese während des Hörens anpassen.;;51cee643-3dc2-11ee-8765-484d7ea9e46c
-1.6;das Thema und die Hauptaussagen in audiovisuellen Texten zu vertrauten Themen verstehen, wenn relativ langsam und deutlich gesprochen wird.;;51cf0d8a-3dc2-11ee-ab52-484d7ea9e46c
-1.7;in strukturell unkomplizierten, literarisch-ästhetischen Hörtexten und audiovisuellen Texten zentrale Themen, Ereignisse, Figuren sowie deren Verbindung zueinander erfassen und erschließen.;;51cf0d8b-3dc2-11ee-a4d5-484d7ea9e46c
-1.8;auf ihnen vertraute (digitale) Werkzeuge bei der Rezeption von Hörtexten und audiovisuellen Texten in der Regel selbstständig zurückgreifen.;;51cf0d8c-3dc2-11ee-b109-484d7ea9e46c
-2;Leseverstehen;Das Leseverstehen ermöglicht die Teilhabe an Kommunikationssituationen, in denen die Rezeption schriftlich vermittelter Texte im Mittel punkt steht. Die Anforderungen in den rezeptiven Anteilen solcher Kommunikationssituationen werden durch Merkmale der Texte (z. B. Länge, sprachliche Komplexität, Struktur oder Genre) und durch spezifische Verstehensabsichten (z. B. das Thema erfassen, eine bestimmte Information auffinden) geprägt.;51cf0d8d-3dc2-11ee-8ba2-484d7ea9e46c
-2.1;strukturell unkomplizierte Korrespondenz zu vertrauten Themen einschließlich der verwendeten Umgangsformen verstehen.;;51cf0d8e-3dc2-11ee-9ab8-484d7ea9e46c
-2.2;in strukturell unkomplizierten Gebrauchstexten wichtige Informationen auffinden und verstehen sowie zum Lösen einer Aufgabe Informationen aus verschiedenen Texten zusammentragen.;;51cf0d8f-3dc2-11ee-b582-484d7ea9e46c
+1;Hörverstehen und audiovisuelles Verstehen;Bis zum Mittleren Schulabschluss erreichen die Schülerinnen und Schüler im Wesentlichen das Niveau B1 des Gemeinsamen europäischen Referenzrahmens.;VW
+1.1;in strukturell unkomplizierten Hörtexten zu vertrauten Themen das Thema erfassen und die Hauptaussagen und Einzelinformationen verstehen, wenn in deutlich artikulierter Standardsprache oder in einer vertrauten Varietät gesprochen wird.;;VS
+1.3;das Thema und die Hauptaussagen von längeren Gesprächen zwischen Anderen verstehen.;;W8
+1.4;Vorträge und Präsentationen verstehen und dabei zwischen Hauptaussagen und unterstützenden Details unterscheiden, wenn die Thematik vertraut und die Darstellung unkompliziert und klar strukturiert ist.;;K9
+1.5;bei längeren Hörtexten und audiovisuellen Texten anhand des erfassten Themas Vorhersagen über den weiteren Inhalt treffen und diese während des Hörens anpassen.;;B9
+1.6;das Thema und die Hauptaussagen in audiovisuellen Texten zu vertrauten Themen verstehen, wenn relativ langsam und deutlich gesprochen wird.;;R7
+1.7;in strukturell unkomplizierten, literarisch-ästhetischen Hörtexten und audiovisuellen Texten zentrale Themen, Ereignisse, Figuren sowie deren Verbindung zueinander erfassen und erschließen.;;F8
+1.8;auf ihnen vertraute (digitale) Werkzeuge bei der Rezeption von Hörtexten und audiovisuellen Texten in der Regel selbstständig zurückgreifen.;;VD
+2;Leseverstehen;Das Leseverstehen ermöglicht die Teilhabe an Kommunikationssituationen, in denen die Rezeption schriftlich vermittelter Texte im Mittel punkt steht. Die Anforderungen in den rezeptiven Anteilen solcher Kommunikationssituationen werden durch Merkmale der Texte (z. B. Länge, sprachliche Komplexität, Struktur oder Genre) und durch spezifische Verstehensabsichten (z. B. das Thema erfassen, eine bestimmte Information auffinden) geprägt.;CF
+2.1;strukturell unkomplizierte Korrespondenz zu vertrauten Themen einschließlich der verwendeten Umgangsformen verstehen.;;BT
+2.2;in strukturell unkomplizierten Gebrauchstexten wichtige Informationen auffinden und verstehen sowie zum Lösen einer Aufgabe Informationen aus verschiedenen Texten zusammentragen.;;TR
 2.3;klar formulierte Anleitungen, Hinweise oder Vorschriften verstehen.;;51cf0d90-3dc2-11ee-b6c6-484d7ea9e46c
 2.4;strukturell unkomplizierte Sachtexten zu vertrauten Themen verstehen und dabei die Hauptaussagen erkennen und Einzelinformationen erfassen.;;51cf0d91-3dc2-11ee-b222-484d7ea9e46c
 2.5;in strukturell unkomplizierten literarisch-ästhetischen Texten zentrale Themen, Ereignisse, Figuren sowie deren Verbindung zueinander erfassen.;;51cf0d92-3dc2-11ee-b649-484d7ea9e46c
