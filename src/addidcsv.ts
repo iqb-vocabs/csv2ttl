@@ -1,4 +1,5 @@
 import { parse as csv_parse} from 'csv-parse/sync';
+import { StringIdGenerator } from "./idGenerator";
 
 // the library we need
 const fs = require('fs');
@@ -7,22 +8,12 @@ const csv = require('csv-parser');
 const json2csv = require('json2csv').parse;
 
 
-
 // Check the data folder
 let data_folder = '.';
 if (process.argv[2]) {
     data_folder = `${data_folder}/${process.argv[2]}`;
 }
 const config_filename = `${data_folder}/csv2ttl_config.json`;
-
-
-function generateId(): string {
-    return new RandExp(/^[2-9ABCDEFGHJKQRSTUVWXYZ]{2}/).gen();
-}
-
-function generateNumericId(old:number): string{
-    return String(old+1).padStart(3, '0');
-}
 
 
 // If the configuration is present
@@ -49,6 +40,7 @@ if (fs.existsSync(config_filename)) {
     let old = 0;
     config_data.vocabularies.forEach((voc: any) => {
         const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
+        const generator = new StringIdGenerator();
         console.log(`Processing '${voc_filename}'`);
         if (voc_filename) {
             console.log(`Processing '${voc_filename}'`);
@@ -60,12 +52,15 @@ if (fs.existsSync(config_filename)) {
             });
         let dataArray: any[];
         dataArray = [];
+
         fs.createReadStream(voc_filename)
             .pipe(csv({separator:csvDelimiter}))
             .on('data', function (row:any) {
                 if (row.id === "") {
-                    row.id = generateId();
+                    row.id = generator.generateId();
                     old++ ;
+                }else {
+                    generator.addId(row.id);
                 }
                 dataArray.push(row);
             })
