@@ -1,5 +1,5 @@
 import { parse as csv_parse} from 'csv-parse/sync';
-import { StringIdGenerator } from "./idGenerator";
+import { NumericIdGenerator, StringIdGenerator } from "./idGenerator";
 
 // the library we need
 const fs = require('fs');
@@ -40,7 +40,7 @@ if (fs.existsSync(config_filename)) {
     let old = 0;
     config_data.vocabularies.forEach((voc: any) => {
         const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
-        const generator = new StringIdGenerator();
+
         console.log(`Processing '${voc_filename}'`);
         if (voc_filename) {
             console.log(`Processing '${voc_filename}'`);
@@ -50,26 +50,62 @@ if (fs.existsSync(config_filename)) {
                 skip_empty_lines: true,
                 delimiter: csvDelimiter
             });
-        let dataArray: any[];
-        dataArray = [];
+            let dataArray: any[];
+            dataArray = [];
 
-        fs.createReadStream(voc_filename)
-            .pipe(csv({separator:csvDelimiter}))
-            .on('data', function (row:any) {
-                if (row.id === "") {
-                    row.id = generator.generateId();
-                    old++ ;
-                }else {
-                    generator.addId(row.id);
+            //store all ids in an array
+            //const old_ids: String[] = data[];
+            let oldIds: string[] = [];
+            let counter = 0;
+            data.forEach((d: any) => {
+                if (d.id != "") {
+                    counter++;
+                    oldIds.push(d.id);
                 }
-                dataArray.push(row);
-            })
-            .on('end', () => {
-                var result = json2csv(dataArray,opts);
-                result = result.replaceAll(/"/g,'');
-                fs.writeFileSync(voc_filename, result);
             });
-    }
+
+            if (counter == 0) {
+                const generator = new NumericIdGenerator([]);
+                while (data.length != counter) {
+                    generator.generateId();
+                    counter++;
+                }
+                generator.orderIds();
+                let position = 0;
+                fs.createReadStream(voc_filename)
+                    .pipe(csv({separator: csvDelimiter}))
+                    .on('data', function (row: any) {
+                        if (row.id === "") {
+                            row.id = generator.elementAtPosition(position);
+                            position++;
+                        }
+                        dataArray.push(row);
+                    })
+                    .on('end', () => {
+                        var result = json2csv(dataArray, opts);
+                        result = result.replaceAll(/"/g, '');
+                        fs.writeFileSync(voc_filename, result);
+                    });
+            }
+
+            if (counter < data.length) {
+                const generator = new NumericIdGenerator(oldIds);
+                console.log(`Adding ids to ${voc_filename}`);
+                fs.createReadStream(voc_filename)
+                    .pipe(csv({separator: csvDelimiter}))
+                    .on('data', function (row: any) {
+                        if (row.id === "") {
+                            row.id = generator.generateId();
+                        }
+                        dataArray.push(row);
+                    })
+                    .on('end', () => {
+                        var result = json2csv(dataArray, opts);
+                        result = result.replaceAll(/"/g, '');
+                        fs.writeFileSync(voc_filename, result);
+                    });
+            }
+        }
     });
 } else {
     console.log(`\x1b[0;31mERROR\x1b[0m File '${config_filename}' not found`);

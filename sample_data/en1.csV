@@ -1,13 +1,13 @@
 notation;title;description;id
-1;gap-filling;;a390d01a-4000-11ee-995d-484d7ea9e46c
-2;multiple choice;;a390d01b-4000-11ee-8ae1-484d7ea9e46c
-3;multiple matching;;a390d01c-4000-11ee-89cb-484d7ea9e46c
-4;note taking;;a390d01d-4000-11ee-b176-484d7ea9e46c
-5;sentence completion;;a390d01e-4000-11ee-97ba-484d7ea9e46c
-6;sequencing;;a390d01f-4000-11ee-be61-484d7ea9e46c
-7;short answer;Kurzantwort;a390d020-4000-11ee-a23e-484d7ea9e46c
-8;table completion;;a390d021-4000-11ee-a089-484d7ea9e46c
-9;true-false;;a390d022-4000-11ee-a549-484d7ea9e46c
-10;true-false-justification;;a390d023-4000-11ee-9d62-484d7ea9e46c
-11;true-false-line;;a390d024-4000-11ee-9424-484d7ea9e46c
-12;true-false-not given;;a390d025-4000-11ee-83e8-484d7ea9e46c
+1;gap-filling;;5VU
+2;multiple choice;;SQE
+3;multiple matching;;D38
+4;note taking;;HFE
+5;sentence completion;;STU
+6;sequencing;;T4U
+7;short answer;Kurzantwort;T75
+8;table completion;;U5S
+9;true-false;;X5X
+10;true-false-justification;;XVV
+11;true-false-line;;YYU
+12;true-false-not given;;Z2U

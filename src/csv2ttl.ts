@@ -62,7 +62,7 @@ if (fs.existsSync(config_filename)) {
                 let actualDeep = 1;
                 let urlStack: NamedNode[]=[];
                 let actualUrl = baseUrl;
-                let oldUrl=baseUrl;
+                let oldUrl= baseUrl;
                 urlStack.push(baseUrl);
 
                 data.forEach((d: any) => {
@@ -101,6 +101,8 @@ if (fs.existsSync(config_filename)) {
                 });
 
                 const output = rdflib.serialize(null, g,undefined,'text/turtle');
+                rdflib.serializer =
+                console.log(output.length);
                 fs.writeFile(out_path, output, {encoding:'utf8'}, () => console.error(""));
 
             } else {
