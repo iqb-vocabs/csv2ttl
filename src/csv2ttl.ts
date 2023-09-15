@@ -70,66 +70,109 @@ if (fs.existsSync(config_filename)) {
                 let actualDeep = 1;
                 let urlStack: string[]=[];
                 let nodesStack: string[]=[];
+                let nodeNodesStack :string[][]=[];
+                let change = 0;
                 let actualUrl = baseUrl;
                 let oldUrl= baseUrl;
                 urlStack.push(baseUrl);
 
-                //We do need to take into account also the next register before,
+                //We do need to take into account also the next register before, I can not store myself
+                //before storing my descendent
                 //data.forEach((d: any) => {
-                for (let i=0; i< data.length; i++){
+                let ldata = data.length;
+                for (let i=0; i< ldata; i++){
                     let d = data[i];
                     let deep = getNotationDeep(d.notation);
-                    if (actualDeep == deep) {
-                        // Case: same level
-                    } else if (actualDeep < deep) {
-                        // Case: deeper level, the new elements are subelements of the previous element
-                        urlStack.push(actualUrl);
-                        actualDeep = deep;
-
-                    } else {
-                        // Case: higher level: the new element belong to a higher hierarchy.
-                        let dif = actualDeep - deep;
-                        while(dif > 0){
-                            urlStack.pop();
-                            // And write out the narrower
-                            dif --;
-                        }
-                        actualDeep = deep;
+                    let deepNext = deep;
+                    if ((i+1) < ldata) {
+                        let s = data[i + 1];
+                        deepNext = getNotationDeep(s.notation);
                     }
+                    if (deepNext===deep || deepNext<deep) {
+                        //write myself
+                        if (change ===1){
+                            change = 0;
+                            nodesStack = [];
+                        }
+                        let oldUrl = urlStack[urlStack.length - 1];      //get the last element and do not pop()
+                        const newUrl = `n1:${d.id}`;
+                        let pbody = `${newUrl}\n`;
+                        const notation = d.notation;
+                        const title = d.title;
+                        const description = d.description;
+                        if (oldUrl === baseUrl)
+                            pbody = `${pbody}\t a skos:Concept;\n` +
+                                `\tskos:inScheme ${oldUrl};\n` +
+                                `\tskos:notation "${notation}";\n` +
+                                `\tskos:topConceptOf ${oldUrl};\n` +
+                                `\tskos:prefLabel "${title}"@de`;
+                        else
+                            pbody = `${pbody}\t a skos:Concept;\n` +
+                                `\tskos:inScheme ${oldUrl};\n` +
+                                `\tskos:notation "${notation}";\n` +
+                                `\tskos:broader ${oldUrl};\n` +
+                                `\tskos:prefLabel "${title}"@de`;
+                        if (description != "")
+                            pbody = pbody + `; \n\tskos:description "${description}"@de. \n`;
+                        else
+                            pbody = pbody + `.\n`;
+                        nodesStack.push(newUrl);
+                        if (deepNext===deep){
+                            stout = `${stout}${pbody}`;
+                        }else{
+                            nodeNodesStack.push(nodesStack);
+                            //write my father also
+                            let dif = deep - deepNext;
 
-                    let oldUrl = urlStack[urlStack.length-1];      //get the last element and do not pop()
-                    const newUrl = `n1:${d.id}`;
-                    let pbody = `${newUrl}\n`;
-                    const notation = d.notation;
-                    const title = d.title;
-                    const description = d.description;
-                    pbody = `${pbody}\t a skos:Concept;\n`+
-                            `\tskos:inScheme ${oldUrl};\n`+
-                            `\tskos:notation "${notation}";\n`+
-                            `\tskos:topConceptOf ${oldUrl};\n`+
-                            `\tskos:prefLabel "${title}"@de`;
-                    if (description != "")
-                        pbody = pbody + `; \n\tskos:description "${description}"@de. \n`;
-                    else
-                        pbody = pbody + `.\n`;
-                    nodesStack.push(newUrl);
-                    stout = `${stout}${pbody}`;
+                            while(dif > 0) {
+                                let oldUrl = urlStack.pop();
+                                let oldBody = nodesStack.pop();
+                                let oldStack = nodeNodesStack.pop();
+                                if (oldStack != undefined) {
+                                    oldStack.forEach(function (node) {
+                                        oldBody = oldBody + `\n\t\t${node},`
+                                    });
+                                    stout = `${stout}${oldBody}`;
+                                }
+                                nodesStack = [];
+                                // And write out the narrower
+                                dif --;
+                            }
+                            actualDeep = deep;
+                        }
+                    }else{// deep of the next more than me
+                        //store myself
+                        let oldUrl = urlStack[urlStack.length - 1];      //get the last element and do not pop()
+                        const newUrl = `n1:${d.id}`;
+                        let pbody = `${newUrl}\n`;
+                        const notation = d.notation;
+                        const title = d.title;
+                        const description = d.description;
+                        let nodesStack: string[]=[];
+                        if (oldUrl === baseUrl)
+                            pbody = `${pbody}\t a skos:Concept;\n` +
+                                `\tskos:inScheme ${oldUrl};\n` +
+                                `\tskos:notation "${notation}";\n` +
+                                `\tskos:topConceptOf ${oldUrl};\n` +
+                                `\tskos:prefLabel "${title}"@de`;
+                        else
+                            pbody = `${pbody}\t a skos:Concept;\n` +
+                                `\tskos:inScheme ${oldUrl};\n` +
+                                `\tskos:notation "${notation}";\n` +
+                                `\tskos:broader ${oldUrl};\n` +
+                                `\tskos:prefLabel "${title}"@de`;
+                        if (description != "")
+                            pbody = pbody + `; \n\tskos:description "${description}"@de. \n`;
+                        else
+                            pbody = pbody + `.\n`;
 
-                  //  const newUrl = g.sym(base_url1+`/`+`${d.id}`);
-                  //   g.add(newUrl, RDF('type'), SKOS('Concept') );
-                  //   g.add(newUrl, SKOS('inScheme'), baseUrl);
-                  //   g.add(newUrl, SKOS('notation'), literal(`${d.notation}`));
-                  //   g.add(newUrl, SKOS('prefLabel'), literal(`${d.title}`, 'de'));
-                  //   if (d.description != "")
-                  //       g.add(newUrl, SKOS('description'), literal(`${d.description}`, 'de'));
-                  //   if (baseUrl === oldUrl) {
-                  //       g.add(oldUrl, SKOS('hasTopConcept'), newUrl);
-                  //       g.add(newUrl, SKOS('topConceptOf'), oldUrl);
-                  //   }else {
-                  //       g.add(newUrl, SKOS('broader'), oldUrl);
-                  //       g.add(oldUrl, SKOS('narrower'), newUrl);
-                  //   }
-                  //   actualUrl = newUrl;
+                        nodesStack.push(pbody);
+                        nodeNodesStack.push(nodesStack);
+                        urlStack.push(actualUrl);
+                        nodesStack = [];
+                        actualDeep = deep;
+                        change = 1;
+                    }
                 };
                 nodesStack.forEach(function(node){
                     footer = footer + `\n\t\t${node},`
