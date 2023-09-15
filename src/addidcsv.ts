@@ -65,12 +65,12 @@ if (fs.existsSync(config_filename)) {
             });
 
             if (counter == 0) {
-                const generator = new NumericIdGenerator([]);
+                const generator = new StringIdGenerator([]);
                 while (data.length != counter) {
                     generator.generateId();
                     counter++;
                 }
-                generator.orderIds();
+                //generator.orderIds();
                 let position = 0;
                 fs.createReadStream(voc_filename)
                     .pipe(csv({separator: csvDelimiter}))
@@ -89,7 +89,7 @@ if (fs.existsSync(config_filename)) {
             }
 
             if (counter < data.length) {
-                const generator = new NumericIdGenerator(oldIds);
+                const generator = new StringIdGenerator(oldIds);
                 console.log(`Adding ids to ${voc_filename}`);
                 fs.createReadStream(voc_filename)
                     .pipe(csv({separator: csvDelimiter}))

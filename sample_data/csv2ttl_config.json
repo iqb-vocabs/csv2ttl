@@ -7,10 +7,11 @@
     }
   ],
   "delimiter": ",",
+  "base": "https://w3id.org/iqb/",
   "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "vocabularies": [
     {
-      "id": "en1",
+      "id": "en",
       "title": [
         {
           "lang": "de",
