@@ -59,17 +59,7 @@ if (fs.existsSync(config_filename)) {
             if (data && data.length > 0) {
                 const out_path  = "./dist/"+filename+".ttl";
                 console.log(`${data.length} records found`);
-
-                //replacing the next lines at the end
-                //const g = graph();
-                //const base_url1 ="https://w3id.org/iqb/"+filename
-                //const baseUrl = g.sym("https://w3id.org/iqb/"+filename+`/#`);
-                //g.add(baseUrl, RDF('type'), SKOS('ConceptScheme'));
-                //g.add(baseUrl, DCTERMS('title'), literal(filename,'de'));
-                //g.add(baseUrl, DCTERMS('creator'), literal(creator,'de'));
-                //===
                 const baseUrl="n0:";
-
                 let footer = `${baseUrl}\n`+
                     `\ta skos:ConceptScheme;\n`+
                     `\tdct:creator "${config_data.creator}"@de;\n`+
@@ -84,7 +74,10 @@ if (fs.existsSync(config_filename)) {
                 let oldUrl= baseUrl;
                 urlStack.push(baseUrl);
 
-                data.forEach((d: any) => {
+                //We do need to take into account also the next register before,
+                //data.forEach((d: any) => {
+                for (let i=0; i< data.length; i++){
+                    let d = data[i];
                     let deep = getNotationDeep(d.notation);
                     if (actualDeep == deep) {
                         // Case: same level
@@ -92,11 +85,13 @@ if (fs.existsSync(config_filename)) {
                         // Case: deeper level, the new elements are subelements of the previous element
                         urlStack.push(actualUrl);
                         actualDeep = deep;
+
                     } else {
                         // Case: higher level: the new element belong to a higher hierarchy.
                         let dif = actualDeep - deep;
                         while(dif > 0){
-                            urlStack.pop()
+                            urlStack.pop();
+                            // And write out the narrower
                             dif --;
                         }
                         actualDeep = deep;
@@ -135,19 +130,13 @@ if (fs.existsSync(config_filename)) {
                   //       g.add(oldUrl, SKOS('narrower'), newUrl);
                   //   }
                   //   actualUrl = newUrl;
-                });
-                // add the child
+                };
                 nodesStack.forEach(function(node){
                     footer = footer + `\n\t\t${node},`
                 })
                 footer = footer.replace(/.$/,".");
                 stout = `${stout}${footer}`;
-                //console.log(stout);
 
-
-                //const output = rdflib.serialize(null, g,undefined,'text/turtle');
-                //rdflib.serializer =
-                //    console.log(output.length);
                 fs.writeFile(out_path, stout, {encoding:'utf8'}, () => console.error(""));
 
             } else {
