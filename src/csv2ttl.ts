@@ -70,9 +70,9 @@ if (fs.existsSync(config_filename)) {
                 let actualDeep = 1;
                 let urlStack: string[]=[];
                 let nodesStack: string[]=[];
+                let bodyStack: string[]=[];
                 let nodeNodesStack :string[][]=[];
                 let change = 0;
-                let actualUrl = baseUrl;
                 let oldUrl= baseUrl;
                 urlStack.push(baseUrl);
 
@@ -84,16 +84,13 @@ if (fs.existsSync(config_filename)) {
                     let d = data[i];
                     let deep = getNotationDeep(d.notation);
                     let deepNext = deep;
+                    // check the deep of the next record
                     if ((i+1) < ldata) {
                         let s = data[i + 1];
                         deepNext = getNotationDeep(s.notation);
-                    }
-                    if (deepNext===deep || deepNext<deep) {
-                        //write myself
-                        if (change ===1){
-                            change = 0;
-                            nodesStack = [];
-                        }
+                    }else
+                        deepNext = 1;
+                    if (deepNext===deep || deepNext < deep) {
                         let oldUrl = urlStack[urlStack.length - 1];      //get the last element and do not pop()
                         const newUrl = `n1:${d.id}`;
                         let pbody = `${newUrl}\n`;
@@ -102,13 +99,13 @@ if (fs.existsSync(config_filename)) {
                         const description = d.description;
                         if (oldUrl === baseUrl)
                             pbody = `${pbody}\t a skos:Concept;\n` +
-                                `\tskos:inScheme ${oldUrl};\n` +
+                                `\tskos:inScheme ${baseUrl};\n` +
                                 `\tskos:notation "${notation}";\n` +
                                 `\tskos:topConceptOf ${oldUrl};\n` +
                                 `\tskos:prefLabel "${title}"@de`;
                         else
                             pbody = `${pbody}\t a skos:Concept;\n` +
-                                `\tskos:inScheme ${oldUrl};\n` +
+                                `\tskos:inScheme ${baseUrl};\n` +
                                 `\tskos:notation "${notation}";\n` +
                                 `\tskos:broader ${oldUrl};\n` +
                                 `\tskos:prefLabel "${title}"@de`;
@@ -117,38 +114,48 @@ if (fs.existsSync(config_filename)) {
                         else
                             pbody = pbody + `.\n`;
                         nodesStack.push(newUrl);
-                        if (deepNext===deep){
-                            stout = `${stout}${pbody}`;
-                        }else{
-                            nodeNodesStack.push(nodesStack);
-                            //write my father also
-                            let dif = deep - deepNext;
 
+                        stout = `${stout}${pbody}`;
+                        if (deepNext < deep){ //In this case I have write down the father with the nodesStack
+                            //write my father also
+                            nodeNodesStack.push(nodesStack); //push the last list of children
+                            let dif = deep - deepNext;
                             while(dif > 0) {
-                                let oldUrl = urlStack.pop();
-                                let oldBody = nodesStack.pop();
-                                let oldStack = nodeNodesStack.pop();
-                                if (oldStack != undefined) {
-                                    oldStack.forEach(function (node) {
+                                let oldUrl = urlStack.pop();  //father
+                                let oldBody = bodyStack.pop(); //children
+                                let children = nodeNodesStack.pop();
+                                if (children != undefined) {
+                                    oldBody = oldBody?.replace(/.$/,".");
+                                    oldBody = `${oldBody}\n`+
+                                            `\tskos:narrower `;
+                                    children.forEach(function (node) {
                                         oldBody = oldBody + `\n\t\t${node},`
                                     });
-                                    stout = `${stout}${oldBody}`;
+                                    oldBody = oldBody?.replace(/.$/,".");
+                                    stout = `${stout}${oldBody}\n`;
                                 }
-                                nodesStack = [];
+                                nodesStack = nodeNodesStack[nodeNodesStack.length - 1];
                                 // And write out the narrower
                                 dif --;
                             }
+
                             actualDeep = deep;
                         }
-                    }else{// deep of the next more than me
-                        //store myself
+                    }else{/*If the deep of the next more than me
+                            1. The body of myself
+                            2. Store the actual nodesStack at nodeNodesStack
+                            3. Store the actual father
+                            4. Empty the nodesStack
+                            5. Store the actual deep
+                        */
+                        change = 1;
+
                         let oldUrl = urlStack[urlStack.length - 1];      //get the last element and do not pop()
                         const newUrl = `n1:${d.id}`;
                         let pbody = `${newUrl}\n`;
                         const notation = d.notation;
                         const title = d.title;
                         const description = d.description;
-                        let nodesStack: string[]=[];
                         if (oldUrl === baseUrl)
                             pbody = `${pbody}\t a skos:Concept;\n` +
                                 `\tskos:inScheme ${oldUrl};\n` +
@@ -157,26 +164,29 @@ if (fs.existsSync(config_filename)) {
                                 `\tskos:prefLabel "${title}"@de`;
                         else
                             pbody = `${pbody}\t a skos:Concept;\n` +
-                                `\tskos:inScheme ${oldUrl};\n` +
+                                `\tskos:inScheme ${baseUrl};\n` +
                                 `\tskos:notation "${notation}";\n` +
                                 `\tskos:broader ${oldUrl};\n` +
                                 `\tskos:prefLabel "${title}"@de`;
                         if (description != "")
-                            pbody = pbody + `; \n\tskos:description "${description}"@de. \n`;
+                            pbody = pbody + `; \n\tskos:description "${description}"@de. `;
                         else
-                            pbody = pbody + `.\n`;
-
-                        nodesStack.push(pbody);
+                            pbody = pbody + `.`;
+                        bodyStack.push(pbody);
+                        nodesStack.push(newUrl);
                         nodeNodesStack.push(nodesStack);
-                        urlStack.push(actualUrl);
                         nodesStack = [];
+                        urlStack.push(newUrl);
                         actualDeep = deep;
-                        change = 1;
                     }
                 };
+                if (change ===1)
+                    nodesStack = nodeNodesStack[0];
                 nodesStack.forEach(function(node){
                     footer = footer + `\n\t\t${node},`
                 })
+
+
                 footer = footer.replace(/.$/,".");
                 stout = `${stout}${footer}`;
 
