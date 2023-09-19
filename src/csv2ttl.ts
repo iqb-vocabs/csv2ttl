@@ -56,6 +56,8 @@ if (fs.existsSync(config_filename)) {
                 delimiter: csvDelimiter
             });
 
+
+
             if (data && data.length > 0) {
                 const out_path  = "./dist/"+filename+".ttl";
                 console.log(`${data.length} records found`);
@@ -72,7 +74,8 @@ if (fs.existsSync(config_filename)) {
                 let nodesStack: string[]=[];
                 let bodyStack: string[]=[];
                 let nodeNodesStack :string[][]=[];
-                let change = 0;
+                let fout = 0;
+             //   let change = 0;
                 let oldUrl= baseUrl;
                 urlStack.push(baseUrl);
 
@@ -88,8 +91,9 @@ if (fs.existsSync(config_filename)) {
                     if ((i+1) < ldata) {
                         let s = data[i + 1];
                         deepNext = getNotationDeep(s.notation);
-                    }else
+                    }else {
                         deepNext = 1;
+                    }
                     if (deepNext===deep || deepNext < deep) {
                         let oldUrl = urlStack[urlStack.length - 1];      //get the last element and do not pop()
                         const newUrl = `n1:${d.id}`;
@@ -114,8 +118,9 @@ if (fs.existsSync(config_filename)) {
                         else
                             pbody = pbody + `.\n`;
                         nodesStack.push(newUrl);
-
                         stout = `${stout}${pbody}`;
+                        fout=1;
+
                         if (deepNext < deep){ //In this case I have write down the father with the nodesStack
                             //write my father also
                             nodeNodesStack.push(nodesStack); //push the last list of children
@@ -123,22 +128,30 @@ if (fs.existsSync(config_filename)) {
                             while(dif > 0) {
                                 let oldUrl = urlStack.pop();  //father
                                 let oldBody = bodyStack.pop(); //children
-                                let children = nodeNodesStack.pop();
-                                if (children != undefined) {
+                                let nodesStack = nodeNodesStack.pop();
+                                if (nodesStack != undefined) {
                                     oldBody = oldBody?.replace(/.$/,".");
                                     oldBody = `${oldBody}\n`+
                                             `\tskos:narrower `;
-                                    children.forEach(function (node) {
+                                    nodesStack.forEach(function (node) {
                                         oldBody = oldBody + `\n\t\t${node},`
                                     });
                                     oldBody = oldBody?.replace(/.$/,".");
                                     stout = `${stout}${oldBody}\n`;
                                 }
-                                nodesStack = nodeNodesStack[nodeNodesStack.length - 1];
                                 // And write out the narrower
                                 dif --;
                             }
-
+                            // @ts-ignore
+                            nodesStack = nodeNodesStack.pop();
+                            console.log(`Los elementos son ${nodeNodesStack.length}`);
+                            nodesStack?.forEach(function (node) {
+                                console.log(node);
+                            });
+                            console.log(`Los elementos son totales son`);
+                            nodeNodesStack.forEach(function (node) {
+                                console.log(node);
+                            });
                             actualDeep = deep;
                         }
                     }else{/*If the deep of the next more than me
@@ -148,8 +161,7 @@ if (fs.existsSync(config_filename)) {
                             4. Empty the nodesStack
                             5. Store the actual deep
                         */
-                        change = 1;
-
+                        fout = 1;
                         let oldUrl = urlStack[urlStack.length - 1];      //get the last element and do not pop()
                         const newUrl = `n1:${d.id}`;
                         let pbody = `${newUrl}\n`;
@@ -175,17 +187,16 @@ if (fs.existsSync(config_filename)) {
                         bodyStack.push(pbody);
                         nodesStack.push(newUrl);
                         nodeNodesStack.push(nodesStack);
+
                         nodesStack = [];
                         urlStack.push(newUrl);
                         actualDeep = deep;
                     }
                 };
-                if (change ===1)
-                    nodesStack = nodeNodesStack[0];
+
                 nodesStack.forEach(function(node){
                     footer = footer + `\n\t\t${node},`
                 })
-
 
                 footer = footer.replace(/.$/,".");
                 stout = `${stout}${footer}`;
