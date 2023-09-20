@@ -1,13 +1,7 @@
 import { parse as csv_parse} from 'csv-parse/sync';
-import {Namespace, graph, literal, NamedNode} from "rdflib";
 
 // the library we need
 const fs = require('fs');
-const rdflib = require('rdflib');
-
-const DCTERMS = Namespace("http://purl.org/dc/terms/")
-const RDF = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-const SKOS = Namespace("http://www.w3.org/2004/02/skos/core#");
 
 // Check the data folder
 let data_folder = '.';
@@ -55,8 +49,6 @@ if (fs.existsSync(config_filename)) {
                 skip_empty_lines: true,
                 delimiter: csvDelimiter
             });
-
-
 
             if (data && data.length > 0) {
                 const out_path  = "./dist/"+filename+".ttl";
@@ -130,8 +122,8 @@ if (fs.existsSync(config_filename)) {
                                 let oldBody = bodyStack.pop(); //children
                                 let nodesStack = nodeNodesStack.pop();
                                 if (nodesStack != undefined) {
-                                    oldBody = oldBody?.replace(/.$/,".");
-                                    oldBody = `${oldBody}\n`+
+                                    //oldBody = oldBody?.replace(/.$/,",");
+                                    oldBody = `${oldBody};\n`+
                                             `\tskos:narrower `;
                                     nodesStack.forEach(function (node) {
                                         oldBody = oldBody + `\n\t\t${node},`
@@ -144,14 +136,6 @@ if (fs.existsSync(config_filename)) {
                             }
                             // @ts-ignore
                             nodesStack = nodeNodesStack.pop();
-                            console.log(`Los elementos son ${nodeNodesStack.length}`);
-                            nodesStack?.forEach(function (node) {
-                                console.log(node);
-                            });
-                            console.log(`Los elementos son totales son`);
-                            nodeNodesStack.forEach(function (node) {
-                                console.log(node);
-                            });
                             actualDeep = deep;
                         }
                     }else{/*If the deep of the next more than me
@@ -181,9 +165,9 @@ if (fs.existsSync(config_filename)) {
                                 `\tskos:broader ${oldUrl};\n` +
                                 `\tskos:prefLabel "${title}"@de`;
                         if (description != "")
-                            pbody = pbody + `; \n\tskos:description "${description}"@de. `;
-                        else
-                            pbody = pbody + `.`;
+                            pbody = pbody + `; \n\tskos:description "${description}"@de `;
+                     //   else
+                        //     pbody = pbody + `.`;
                         bodyStack.push(pbody);
                         nodesStack.push(newUrl);
                         nodeNodesStack.push(nodesStack);

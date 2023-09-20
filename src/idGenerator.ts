@@ -1,5 +1,3 @@
-import RandExp from "randexp";
-
 abstract class IdGenerator {
     ids: string[] = [];
     constructor(ids: string[]){
