@@ -49,20 +49,21 @@ if (fs.existsSync(config_filename)) {
 
             if (data && data.length > 0) {
                 const filename = voc_filename.split(".")[1].split("/")[2];
-                const out_path  = "./dist/"+filename+".ttl";
+                const out_path  = `./dist/${voc.title[0].value.replace(/ /g,"_")}.ttl`;
                 console.log(`${data.length} records found`);
                 const g = graph();
-                const base_url1 ="https://w3id.org/iqb/"+filename
-                const baseUrl = g.sym("https://w3id.org/iqb/"+filename+`/#`);
+                //const base_url1 ="https://w3id.org/iqb/"+filename
+                const base_url1 =`${config_data.base}${config_data.group}/${voc.id}`;
+                //const baseUrl = g.sym("https://w3id.org/iqb/"+filename+`/#`);
+                const baseUrl = g.sym(`${base_url1}/#`);
                 g.add(baseUrl, RDF('type'), SKOS('ConceptScheme'));
-                g.add(baseUrl, DCTERMS('title'), literal(filename,'de'));
+                g.add(baseUrl, DCTERMS('title'), literal(`${config_data.title[0].value} - ${voc.title[0].value}`,'de'));
                 g.add(baseUrl, DCTERMS('creator'), literal(creator,'de'));
 
                 // initiation of variables for loop:
                 let actualDeep = 1;
                 let urlStack: NamedNode[]=[];
                 let actualUrl = baseUrl;
-                let oldUrl= baseUrl;
                 urlStack.push(baseUrl);
 
                 data.forEach((d: any) => {
@@ -101,8 +102,6 @@ if (fs.existsSync(config_filename)) {
                 });
 
                 const output = rdflib.serialize(null, g,undefined,'text/turtle');
-                rdflib.serializer =
-                console.log(output.length);
                 fs.writeFile(out_path, output, {encoding:'utf8'}, () => console.error(""));
 
             } else {
