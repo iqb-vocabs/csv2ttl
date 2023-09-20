@@ -7,7 +7,8 @@
     }
   ],
   "delimiter": ",",
-  "base": "https://w3id.org/iqb/",
+  "base": "https://w3id.org/iqb/v",
+  "group": "34",
   "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "vocabularies": [
     {
@@ -20,7 +21,7 @@
       ]
     },
     {
-      "id": "3er",
+      "id": "3e",
       "title": [
         {
           "lang": "de",
@@ -29,7 +30,7 @@
       ]
     },
     {
-      "id": "5er",
+      "id": "5e",
       "title": [
         {
           "lang": "de",
@@ -38,7 +39,7 @@
       ]
     },
     {
-      "id": "7er",
+      "id": "7e",
       "title": [
         {
           "lang": "de",

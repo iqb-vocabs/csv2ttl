@@ -1,28 +1,24 @@
 import { parse as csv_parse} from 'csv-parse/sync';
 
-// the library we need
 const fs = require('fs');
 
-// Check the data folder
 let data_folder = '.';
 if (process.argv[2]) {
     data_folder = `${data_folder}/${process.argv[2]}`;
 }
 const config_filename = `${data_folder}/csv2ttl_config.json`;
 
-// functions
 function getNotationDeep(notation: string): number{
     return (notation.split(".")).length;
 }
 
-// If the configuration is present
 if (fs.existsSync(config_filename)) {
 
     // Read the JSON configuration file
     const config_data_raw = fs.readFileSync(config_filename, 'utf8');
     const config_data = JSON.parse(config_data_raw);
     const creator = config_data.creator;
-    console.log(creator);
+
     let fileList: { [name: string]: string } = {};
     fs.readdirSync(data_folder).forEach((file: string) => {
         fileList[file.toUpperCase()] = `${data_folder}/${file}`;
@@ -32,15 +28,21 @@ if (fs.existsSync(config_filename)) {
     let stout_base:string = "@prefix dct: <http://purl.org/dc/terms/>.\n" +
         "@prefix skos: <http://www.w3.org/2004/02/skos/core#>. \n"+
         `@prefix n0: <${config_data.base}`;
-    console.log(stout_base);
 
-    // for each vocabular csv file: read the data and add the data to the graph
     config_data.vocabularies.forEach((voc: any) => {
+
         const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
-        const filename = voc_filename.split(".")[1].split("/")[2];
-        let header = `${stout_base}${filename}/#>. \n`+
-            `@prefix n1: <${config_data.base}${filename}/>. \n\n`;
+        const header = `${stout_base}${config_data.group}/${voc.id}/#>. \n`+
+            `@prefix n1: <${config_data.base}${config_data.group}/${voc.id}/>. \n\n`;
+        const out_path  = `./dist/${voc.title[0].value.replace(/ /g,"_")}.ttl`;
+        const baseUrl="n0:";
+        let footer = `${baseUrl}\n`+
+            `\ta skos:ConceptScheme;\n`+
+            `\tdct:creator "${config_data.creator}"@${voc.title[0].lang};\n`+
+            `\tdct:title "${config_data.title[0].value} - ${voc.title[0].value}"@${config_data.title[0].lang};\n`+
+            `\tskos:hasTopConcept`
         let stout = header;
+
         if (voc_filename) {
             console.log(`Processing '${voc_filename}'`);
             const data_raw = fs.readFileSync(voc_filename, 'utf8');
@@ -51,78 +53,61 @@ if (fs.existsSync(config_filename)) {
             });
 
             if (data && data.length > 0) {
-                const out_path  = "./dist/"+filename+".ttl";
                 console.log(`${data.length} records found`);
-                const baseUrl="n0:";
-                let footer = `${baseUrl}\n`+
-                    `\ta skos:ConceptScheme;\n`+
-                    `\tdct:creator "${config_data.creator}"@de;\n`+
-                    `\tdct:title "${filename}"@de;\n`+
-                    `\tskos:hasTopConcept`
-
                 // initiation of variables for loop:
                 let actualDeep = 1;
                 let urlStack: string[]=[];
                 let nodesStack: string[]=[];
                 let bodyStack: string[]=[];
                 let nodeNodesStack :string[][]=[];
-                let fout = 0;
-             //   let change = 0;
                 let oldUrl= baseUrl;
-                urlStack.push(baseUrl);
+                const num = data.length;
 
-                //We do need to take into account also the next register before, I can not store myself
-                //before storing my descendent
-                //data.forEach((d: any) => {
-                let ldata = data.length;
-                for (let i=0; i< ldata; i++){
+                urlStack.push(baseUrl);
+                for (let i=0; i< num; i++){
                     let d = data[i];
                     let deep = getNotationDeep(d.notation);
                     let deepNext = deep;
+
                     // check the deep of the next record
-                    if ((i+1) < ldata) {
+                    if ((i+1) < num) {
                         let s = data[i + 1];
                         deepNext = getNotationDeep(s.notation);
                     }else {
                         deepNext = 1;
                     }
                     if (deepNext===deep || deepNext < deep) {
-                        let oldUrl = urlStack[urlStack.length - 1];      //get the last element and do not pop()
+                        oldUrl = urlStack[urlStack.length - 1];
                         const newUrl = `n1:${d.id}`;
-                        let pbody = `${newUrl}\n`;
-                        const notation = d.notation;
-                        const title = d.title;
-                        const description = d.description;
+                        let body = `${newUrl}\n`;
                         if (oldUrl === baseUrl)
-                            pbody = `${pbody}\t a skos:Concept;\n` +
+                            body = `${body}\t a skos:Concept;\n` +
                                 `\tskos:inScheme ${baseUrl};\n` +
-                                `\tskos:notation "${notation}";\n` +
+                                `\tskos:notation "${d.notation}";\n` +
                                 `\tskos:topConceptOf ${oldUrl};\n` +
-                                `\tskos:prefLabel "${title}"@de`;
+                                `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
                         else
-                            pbody = `${pbody}\t a skos:Concept;\n` +
+                            body = `${body}\t a skos:Concept;\n` +
                                 `\tskos:inScheme ${baseUrl};\n` +
-                                `\tskos:notation "${notation}";\n` +
+                                `\tskos:notation "${d.notation}";\n` +
                                 `\tskos:broader ${oldUrl};\n` +
-                                `\tskos:prefLabel "${title}"@de`;
-                        if (description != "")
-                            pbody = pbody + `; \n\tskos:description "${description}"@de. \n`;
+                                `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
+                        if (d.description != "")
+                            body = body + `; \n\tskos:description "${d.description}"@${voc.title[0].lang}. \n`;
                         else
-                            pbody = pbody + `.\n`;
+                            body = body + `.\n`;
                         nodesStack.push(newUrl);
-                        stout = `${stout}${pbody}`;
-                        fout=1;
+                        stout = `${stout}${body}`;
 
-                        if (deepNext < deep){ //In this case I have write down the father with the nodesStack
-                            //write my father also
-                            nodeNodesStack.push(nodesStack); //push the last list of children
+                        //In this case I have to write out the father with the nodesStack
+                        if (deepNext < deep){
+                            nodeNodesStack.push(nodesStack);
                             let dif = deep - deepNext;
                             while(dif > 0) {
-                                let oldUrl = urlStack.pop();  //father
-                                let oldBody = bodyStack.pop(); //children
+                                urlStack.pop();
+                                let oldBody = bodyStack.pop();
                                 let nodesStack = nodeNodesStack.pop();
                                 if (nodesStack != undefined) {
-                                    //oldBody = oldBody?.replace(/.$/,",");
                                     oldBody = `${oldBody};\n`+
                                             `\tskos:narrower `;
                                     nodesStack.forEach(function (node) {
@@ -131,52 +116,46 @@ if (fs.existsSync(config_filename)) {
                                     oldBody = oldBody?.replace(/.$/,".");
                                     stout = `${stout}${oldBody}\n`;
                                 }
-                                // And write out the narrower
                                 dif --;
                             }
                             // @ts-ignore
                             nodesStack = nodeNodesStack.pop();
                             actualDeep = deep;
                         }
-                    }else{/*If the deep of the next more than me
-                            1. The body of myself
+                    }else{/*If the deep of the next more than me. Actions:
+                            1. Store body of myself
                             2. Store the actual nodesStack at nodeNodesStack
                             3. Store the actual father
                             4. Empty the nodesStack
                             5. Store the actual deep
                         */
-                        fout = 1;
-                        let oldUrl = urlStack[urlStack.length - 1];      //get the last element and do not pop()
+
+                        let oldUrl = urlStack[urlStack.length - 1];
                         const newUrl = `n1:${d.id}`;
-                        let pbody = `${newUrl}\n`;
-                        const notation = d.notation;
-                        const title = d.title;
-                        const description = d.description;
+                        let body = `${newUrl}\n`;
                         if (oldUrl === baseUrl)
-                            pbody = `${pbody}\t a skos:Concept;\n` +
+                            body = `${body}\t a skos:Concept;\n` +
                                 `\tskos:inScheme ${oldUrl};\n` +
-                                `\tskos:notation "${notation}";\n` +
+                                `\tskos:notation "${d.notation}";\n` +
                                 `\tskos:topConceptOf ${oldUrl};\n` +
-                                `\tskos:prefLabel "${title}"@de`;
+                                `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
                         else
-                            pbody = `${pbody}\t a skos:Concept;\n` +
+                            body = `${body}\t a skos:Concept;\n` +
                                 `\tskos:inScheme ${baseUrl};\n` +
-                                `\tskos:notation "${notation}";\n` +
+                                `\tskos:notation "${d.notation}";\n` +
                                 `\tskos:broader ${oldUrl};\n` +
-                                `\tskos:prefLabel "${title}"@de`;
-                        if (description != "")
-                            pbody = pbody + `; \n\tskos:description "${description}"@de `;
-                     //   else
-                        //     pbody = pbody + `.`;
-                        bodyStack.push(pbody);
+                                `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
+                        if (d.description != "")
+                            body = body + `; \n\tskos:description "${d.description}"@${voc.title[0].lang} `;
+
+                        bodyStack.push(body);
                         nodesStack.push(newUrl);
                         nodeNodesStack.push(nodesStack);
-
                         nodesStack = [];
                         urlStack.push(newUrl);
                         actualDeep = deep;
                     }
-                };
+                }
 
                 nodesStack.forEach(function(node){
                     footer = footer + `\n\t\t${node},`

@@ -23,10 +23,10 @@ export class StringIdGenerator extends IdGenerator {
     generateId(): string {
         const RandExp = require("randexp");
 
-        let newId = new RandExp(/^[2-9ABCDEFGHJKQRSTUVWXYZ]{3}/).gen();
+        let newId = new RandExp(/^[2345679abcdefghprqstuvxyz]{3}/).gen();
 
         while (this.ids.includes(newId)){
-            newId = new RandExp(/^[2-9ABCDEFGHJKQRSTUVWXYZ]{3}/).gen();
+            newId = new RandExp(/^[2345679abcdefghprqstuvxyz]{3}/).gen();
         }
         this.addIds(newId);
         return newId;
@@ -35,10 +35,10 @@ export class StringIdGenerator extends IdGenerator {
     generateIdBetween(lowString: string, upString: string): string {
         const RandExp = require("randexp");
 
-        let newId = new RandExp(/^[2-9ABCDEFGHJKQRSTUVWXYZ]{3}/).gen();
+        let newId = new RandExp(/^[2345679abcdefghprqstuvxyz]{3}/).gen();
 
         while (this.ids.includes(newId) || newId > lowString || newId>upString ){
-            newId = new RandExp(/^[2-9ABCDEFGHJKQRSTUVWXYZ]{3}/).gen();
+            newId = new RandExp(/^[2345679abcdefghprqstuvxyz]{3}/).gen();
         }
         this.addIds(newId);
         return newId;

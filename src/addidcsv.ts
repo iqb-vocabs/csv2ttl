@@ -1,14 +1,11 @@
 import { parse as csv_parse} from 'csv-parse/sync';
-import { NumericIdGenerator, StringIdGenerator } from "./idGenerator";
+import { StringIdGenerator } from "./idGenerator";
 
-// the library we need
 const fs = require('fs');
-const RandExp = require('randexp');
 const csv = require('csv-parser');
 const json2csv = require('json2csv').parse;
 
 
-// Check the data folder
 let data_folder = '.';
 if (process.argv[2]) {
     data_folder = `${data_folder}/${process.argv[2]}`;
@@ -16,19 +13,12 @@ if (process.argv[2]) {
 const config_filename = `${data_folder}/csv2ttl_config.json`;
 
 
-// If the configuration is present
 if (fs.existsSync(config_filename)) {
     // Read the JSON configuration file
     const config_data_raw = fs.readFileSync(config_filename, 'utf8');
     const config_data = JSON.parse(config_data_raw);
-    const creator = config_data.creator;
-    console.log(creator);
-    let fileList: { [name: string]: string } = {};
-    fs.readdirSync(data_folder).forEach((file: string) => {
-        fileList[file.toUpperCase()] = `${data_folder}/${file}`;
-    });
+    const fileList: { [name: string]: string } = {};
     const csvDelimiter = config_data.csv_delimiter || ';';
-
     const fields = ['notation','title','description','id'];
     const opts = {
         fieldNames: fields,
@@ -36,14 +26,16 @@ if (fs.existsSync(config_filename)) {
         delimiter:';'
     };
 
+    fs.readdirSync(data_folder).forEach((file: string) => {
+        fileList[file.toUpperCase()] = `${data_folder}/${file}`;
+    });
+
     //add id if it does not exist
-    let old = 0;
     config_data.vocabularies.forEach((voc: any) => {
         const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
 
-        console.log(`Processing '${voc_filename}'`);
         if (voc_filename) {
-            console.log(`Processing '${voc_filename}'`);
+            console.log(`Adding ids to '${voc_filename}'`);
             const data_raw = fs.readFileSync(voc_filename, 'utf8');
             const data = csv_parse(data_raw, {
                 columns: true,
@@ -82,7 +74,7 @@ if (fs.existsSync(config_filename)) {
                         dataArray.push(row);
                     })
                     .on('end', () => {
-                        var result = json2csv(dataArray, opts);
+                        let result = json2csv(dataArray, opts);
                         result = result.replaceAll(/"/g, '');
                         fs.writeFileSync(voc_filename, result);
                     });
@@ -90,7 +82,6 @@ if (fs.existsSync(config_filename)) {
 
             if (counter < data.length) {
                 const generator = new StringIdGenerator(oldIds);
-                console.log(`Adding ids to ${voc_filename}`);
                 fs.createReadStream(voc_filename)
                     .pipe(csv({separator: csvDelimiter}))
                     .on('data', function (row: any) {
@@ -100,7 +91,7 @@ if (fs.existsSync(config_filename)) {
                         dataArray.push(row);
                     })
                     .on('end', () => {
-                        var result = json2csv(dataArray, opts);
+                        let result = json2csv(dataArray, opts);
                         result = result.replaceAll(/"/g, '');
                         fs.writeFileSync(voc_filename, result);
                     });
