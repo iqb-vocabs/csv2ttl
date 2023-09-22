@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { parse as csv_parse} from 'csv-parse/sync';
 import { StringIdGenerator } from "./idGenerator";
 
