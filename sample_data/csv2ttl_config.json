@@ -6,9 +6,8 @@
       "value": "Vokabulare zur Beschreibung des Itemformates"
     }
   ],
-  "delimiter": ",",
-  "base": "https://w3id.org/iqb/v",
-  "group": "34",
+  "csv_delimiter": ";",
+  "base": "https://w3id.org/iqb/v34",
   "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "vocabularies": [
     {

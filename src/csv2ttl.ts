@@ -1,22 +1,72 @@
 import { parse as csv_parse} from 'csv-parse/sync';
 
 const fs = require('fs');
+const Ajv = require("ajv")
+const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
 
 let data_folder = '.';
 if (process.argv[2]) {
     data_folder = `${data_folder}/${process.argv[2]}`;
 }
+const schema_filename ='csv2ttl_config.schema.json';
 const config_filename = `${data_folder}/csv2ttl_config.json`;
 
 function getNotationDeep(notation: string): number{
     return (notation.split(".")).length;
 }
 
-if (fs.existsSync(config_filename)) {
-
-    // Read the JSON configuration file
-    const config_data_raw = fs.readFileSync(config_filename, 'utf8');
-    const config_data = JSON.parse(config_data_raw);
+let schema;
+let config_data: unknown = null;
+try {
+    schema = fs.readFileSync(schema_filename, 'utf8');
+} catch (err) {
+    console.log(`\x1b[0;31mERROR\x1b[0m reading schema '${schema_filename}':`);
+    console.error(err);
+    process.exitCode = 1;
+    schema = null;
+}
+if (schema) {
+    try {
+        compiledSchema = ajv.compile(JSON.parse(schema))
+    } catch (err) {
+        console.log(`\x1b[0;31mERROR\x1b[0m parsing schema '${schema_filename}':`);
+        console.error(err);
+        process.exitCode = 1;
+        compiledSchema = null;
+    }
+    if (compiledSchema) {
+        if (fs.existsSync(config_filename)) {
+            try {
+                const config_data_raw = fs.readFileSync(config_filename, 'utf8');
+                config_data = JSON.parse(config_data_raw);
+            } catch (err) {
+                console.log(`\x1b[0;31mERROR\x1b[0m reading and parsing config file '${config_filename}':`);
+                console.error(err);
+                process.exitCode = 1;
+            }
+            if (config_data) {
+                try {
+                    const valid = compiledSchema ? compiledSchema(config_data) : null;
+                    if (valid) {
+                        console.log(`use config file '${config_filename}'`);
+                    } else {
+                        console.log(`\x1b[0;31mERROR\x1b[0m invalid config file '${config_filename}':`);
+                        console.error(compiledSchema ? compiledSchema.errors : 'error unknown')
+                        process.exitCode = 1;
+                    }
+                } catch (err) {
+                    console.log(`\x1b[0;31mERROR\x1b[0m invalid config file '${config_filename}':`);
+                    console.error(err);
+                    process.exitCode = 1;
+                }
+            }
+        } else {
+            console.log(`\x1b[0;31mERROR\x1b[0m config file '${config_filename}' not found`);
+            process.exitCode = 1;
+        }
+    }
+}
+if (config_data) {
     const creator = config_data.creator;
 
     let fileList: { [name: string]: string } = {};

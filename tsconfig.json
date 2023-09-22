@@ -13,6 +13,6 @@
     "rootDir": "src",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "response"],
+  "include": ["src", "test_schema.ts"],
   "exclude": ["node_modules", "dist", "config_schema"]
 }
