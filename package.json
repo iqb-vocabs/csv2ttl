@@ -1,12 +1,13 @@
 {
   "name": "@iqb/csv2ttl",
-  "version": "0.1.0",
+  "version": "0.2.0-beta",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "CC-BY-4.0",
   "description": "Data interfaces for verona related assessment applications",
   "scripts": {
     "add_ids": "ts-node src/addidcsv.ts sample_data",
-    "start": "ts-node src/csv2ttl.ts sample_data dist"
+    "start": "ts-node src/csv2ttl.ts sample_data dist_ttl",
+    "generate_npm_publish": "tsc && npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -16,16 +17,21 @@
     "url": "https://github.com/iqb-berlin/responses/issues"
   },
   "homepage": "https://github.com/iqb-berlin/responses#readme",
-  "devDependencies": {
-    "@asyncapi/cli": "^0.8.1",
-    "@asyncapi/html-template": "^0.28.3",
-    "@types/node": "^20.4.4",
-    "ajv": "^8.12.0",
-    "ts-node": "^10.9.1"
-  },
   "dependencies": {
     "csv-parse": "^5.5.0",
     "json2csv": "^6.0.0-alpha.2",
-    "randexp": "^0.5.3"
-  }
+    "randexp": "^0.5.3",
+    "@types/node": "^20.4.4",
+    "ajv": "^8.12.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "main": "index.js",
+  "bin": {
+    "csv2ttl": "./csv2ttl.js",
+    "addidcsv": "./addidcsv.js"
+  },
+  "files":  [
+    "src/csv2ttl_config.schema.json"
+  ]
 }
