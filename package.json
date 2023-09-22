@@ -25,9 +25,7 @@
   },
   "dependencies": {
     "csv-parse": "^5.5.0",
-    "csv-parser": "^3.0.0",
     "json2csv": "^6.0.0-alpha.2",
-    "randexp": "^0.5.3",
-    "rdflib": "^2.2.32"
+    "randexp": "^0.5.3"
   }
 }
