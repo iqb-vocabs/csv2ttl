@@ -89,18 +89,28 @@ if (config_data) {
         `@prefix n0: <${config_data.base}`;
 
     config_data.vocabularies.forEach((voc: any) => {
-        if (config_data) {
-            const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
-            const header = `${stout_base}/${voc.id}/#>. \n`+
-                `@prefix n1: <${config_data.base}/${voc.id}/>. \n\n`;
-            const out_path  = `${output_folder}/${voc.title[0].value.replace(/ /g,"_")}.ttl`;
-            const baseUrl="n0:";
-            let footer = `${baseUrl}\n`+
+
+        const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
+        const header = `${stout_base}/${voc.id}/#>. \n`+
+            `@prefix n1: <${config_data.base}/${voc.id}/>. \n\n`;
+        const out_path  = `${output_folder}${voc.title[0].value.replace(/ /g,"_")}.ttl`;
+        const baseUrl="n0:";
+        let footer="";
+        if (voc.description[0].value==="" )
+            footer = `${baseUrl}\n`+
                 `\ta skos:ConceptScheme;\n`+
                 `\tdct:creator "${config_data.creator}"@${voc.title[0].lang};\n`+
-                `\tdct:title "${config_data.title[0].value} - ${voc.title[0].value}"@${config_data.title[0].lang};\n`+
-                `\tskos:hasTopConcept`
-            let stout = header;
+                `\tdct:title "${config_data.title[0].value} - ${voc.title[0].value}"@${voc.title[0].lang};\n`+
+                `\tskos:hasTopConcept`;
+        else
+            footer = `${baseUrl}\n`+
+                `\ta skos:ConceptScheme;\n`+
+                `\tdct:creator "${config_data.creator}"@${voc.title[0].lang};\n`+
+                `\tdct:title "${config_data.title[0].value} - ${voc.title[0].value}"@${voc.title[0].lang};\n`+
+                `\tdct:description "${voc.description[0].value}"@${voc.description[0].lang};\n`+
+                `\tskos:hasTopConcept`;
+
+        let stout = header;
 
             if (voc_filename) {
                 let data;

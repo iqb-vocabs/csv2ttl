@@ -17,6 +17,12 @@
           "lang": "de",
           "value": "Itemformat Englisch Sek I"
         }
+      ],
+      "description": [
+        {
+          "lang": "de",
+          "value": "Itemformat Englisch Sek I and description modified and long text "
+        }
       ]
     },
     {
@@ -25,6 +31,12 @@
         {
           "lang": "de",
           "value": "Itemformat 3er Liste"
+        }
+      ],
+      "description": [
+        {
+          "lang": "de",
+          "value": ""
         }
       ]
     },
@@ -35,6 +47,12 @@
           "lang": "de",
           "value": "Itemformat 5er Liste"
         }
+      ],
+      "description": [
+        {
+          "lang": "de",
+          "value": "Itemformat 5er Liste description"
+        }
       ]
     },
     {
@@ -43,6 +61,12 @@
         {
           "lang": "de",
           "value": "Itemformat 7er Liste"
+        }
+      ],
+      "description": [
+        {
+          "lang": "de",
+          "value": "Itemformat 7er Liste description"
         }
       ]
     }
