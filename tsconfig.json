@@ -10,8 +10,9 @@
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "lib": ["es2015", "dom"],
-    "rootDir": "src"
+    "rootDir": "src",
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "response"],
-  "exclude": ["node_modules", "dist", "config_schema"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

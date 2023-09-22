@@ -1,5 +1,5 @@
 {
-  "$id": "https://w3id.org/iqb/vocabs/csv2ttl_config.json",
+  "$id": "https://w3id.org/iqb/vocabs/csv2ttl_config.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Csv2Ttl Config",
   "description": "Configuration file to transform csv vocabularies into ttl files",
@@ -35,7 +35,11 @@
         ",",
         ";"
       ],
-      "default": ";"
+      "default": ";",
+      "description": "CSV is not a strict standard, so the delimiter is not fixed and must be declared."
+    },
+    "base": {
+      "type": "string"
     },
     "vocabularies": {
       "type": "array",
