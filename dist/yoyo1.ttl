@@ -1,0 +1,82 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix n0: <http://purl.org/dc/terms/>.
+@prefix en1: <https://w3id.org/iqb/en1#>.
+
+en1:scheme
+    a skos:ConceptScheme ;
+    n0:creator "IQB"@de ;
+    n0:title "en1"@de ;
+    skos:hasTopConcept
+        en1:a390d01a-4000-11ee-995d-484d7ea9e46c ,
+        en1:a390d01b-4000-11ee-8ae1-484d7ea9e46c ,
+        en1:a390d01c-4000-11ee-89cb-484d7ea9e46c ,
+        en1:a390d01d-4000-11ee-b176-484d7ea9e46c ,
+        en1:a390d01e-4000-11ee-97ba-484d7ea9e46c ,
+        en1:a390d01f-4000-11ee-be61-484d7ea9e46c ,
+        en1:a390d020-4000-11ee-a23e-484d7ea9e46c ,
+        en1:a390d021-4000-11ee-a089-484d7ea9e46c ,
+        en1:a390d022-4000-11ee-a549-484d7ea9e46c ,
+        en1:a390d023-4000-11ee-9d62-484d7ea9e46c ,
+        en1:a390d024-4000-11ee-9424-484d7ea9e46c ,
+        en1:a390d025-4000-11ee-83e8-484d7ea9e46c .
+en1:a390d01a-4000-11ee-995d-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "1" ;
+    skos:prefLabel "gap-filling"@de .
+en1:a390d01b-4000-11ee-8ae1-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "2" ;
+    skos:prefLabel "multiple choice"@de .
+en1:a390d01c-4000-11ee-89cb-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "3" ;
+    skos:prefLabel "multiple matching"@de .
+en1:a390d01d-4000-11ee-b176-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "4 ";
+    skos:prefLabel "note taking"@de .
+en1:a390d01e-4000-11ee-97ba-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "5" ;
+    skos:prefLabel "sentence completion"@de .
+en1:a390d01f-4000-11ee-be61-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "6" ;
+    skos:prefLabel "sequencing"@de .
+en1:a390d020-4000-11ee-a23e-484d7ea9e46c
+    a skos:Concept ;
+    skos:description "Kurzantwort"@de ;
+    skos:inScheme en1:scheme ;
+    skos:notation "7" ;
+    skos:prefLabel "short answer"@de .
+en1:a390d021-4000-11ee-a089-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "8" ;
+    skos:prefLabel "table completion"@de .
+en1:a390d022-4000-11ee-a549-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "9" ;
+    skos:prefLabel "true-false"@de .
+en1:a390d023-4000-11ee-9d62-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "10" ;
+    skos:prefLabel "true-false-justification"@de .
+en1:a390d024-4000-11ee-9424-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "11" ;
+    skos:prefLabel "true-false-line"@de .
+en1:a390d025-4000-11ee-83e8-484d7ea9e46
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "12" ;
+    skos:prefLabel "true-false-not given"@de .

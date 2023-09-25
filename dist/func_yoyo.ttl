@@ -1,0 +1,23 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix en1: <https://w3id.org/iqb/en1#>.
+
+en1:scheme
+    a skos:ConceptScheme ;
+    dct:creator "IQB"@de ;
+    dct:title "en1"@de ;
+    skos:hasTopConcept
+        en1:a390d01a-4000-11ee-995d-484d7ea9e46c ,
+        en1:a390d01b-4000-11ee-8ae1-484d7ea9e46c .
+en1:a390d01a-4000-11ee-995d-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "1" ;
+    skos:prefLabel "gap-filling"@de ;
+    .
+en1:a390d01b-4000-11ee-8ae1-484d7ea9e46c
+    a skos:Concept ;
+    skos:inScheme en1:scheme ;
+    skos:notation "2" ;
+    skos:prefLabel "true-false-not given"@de ;
+    .

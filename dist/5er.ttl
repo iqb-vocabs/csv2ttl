@@ -1,0 +1,45 @@
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>. 
+@prefix n0: <https://w3id.org/iqb/5er/#>. 
+@prefix n1: <https://w3id.org/iqb/5er/>. 
+
+n1:EVD
+	 a skos:Concept;
+	skos:inScheme n0:;
+	skos:notation "";
+	skos:topConceptOf n0:;
+	skos:prefLabel "GA - Geschlossen Ankreuzen"@de.
+n1:YFE
+	 a skos:Concept;
+	skos:inScheme n0:;
+	skos:notation "";
+	skos:topConceptOf n0:;
+	skos:prefLabel "GK - Geschlossen Kodieren"@de.
+n1:3BS
+	 a skos:Concept;
+	skos:inScheme n0:;
+	skos:notation "";
+	skos:topConceptOf n0:;
+	skos:prefLabel "0/1 - Einfach dichotom"@de.
+n1:SAA
+	 a skos:Concept;
+	skos:inScheme n0:;
+	skos:notation "";
+	skos:topConceptOf n0:;
+	skos:prefLabel "1+ - Mehrere Variablen und/oder Codes"@de.
+n1:ZHU
+	 a skos:Concept;
+	skos:inScheme n0:;
+	skos:notation "";
+	skos:topConceptOf n0:;
+	skos:prefLabel "PL - Produktive Leistung"@de.
+n0:
+	a skos:ConceptScheme;
+	dct:creator "IQB - Institut zur Qualitätsentwicklung im Bildungswesen"@de;
+	dct:title "5er"@de;
+	skos:hasTopConcept
+		n1:EVD,
+		n1:YFE,
+		n1:3BS,
+		n1:SAA,
+		n1:ZHU.
