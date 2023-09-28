@@ -13,4 +13,7 @@ Thumbs.db
 /public/**
 /dist_ttl
 /sample_data
+/src
 .gitlab-ci.yml
+*.iml
+tsconfig.json

@@ -1,6 +1,6 @@
 {
   "name": "@iqb/csv2ttl",
-  "version": "0.3.0-beta",
+  "version": "0.5.0-beta",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "CC-BY-4.0",
   "description": "Data interfaces for verona related assessment applications",
@@ -30,7 +30,7 @@
     "typescript": "^5.2.2"
   },
   "bin": {
-    "csv2ttl": "./csv2ttl.js",
-    "addidcsv": "./addidcsv.js"
+    "csv2ttl": "./dist_npm/csv2ttl.js",
+    "addidcsv": "./dist_npm/addidcsv.js"
   }
 }

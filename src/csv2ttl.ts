@@ -5,7 +5,7 @@ const fs = require('fs');
 const Ajv = require("ajv")
 const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
 
-const schema_filename ='src/csv2ttl_config.schema.json';
+const schema_filename = `${__dirname}/csv2ttl_config.schema.json`;
 
 let data_folder = '.';
 if (process.argv[2]) {
