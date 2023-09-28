@@ -2,9 +2,6 @@
 import { parse as csv_parse} from 'csv-parse/sync';
 
 const fs = require('fs');
-const Ajv = require("ajv")
-const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
-
 const schema_filename = `${__dirname}/csv2ttl_config.schema.json`;
 
 let data_folder = '.';
@@ -22,61 +19,7 @@ function getNotationDeep(notation: string): number{
 }
 
 
-let schema;
-let config_data: { creator: any; csv_delimiter: string; base: any; vocabularies: any[]; title: { lang: string; value: string }[]; } | null = null;
-try {
-    schema = fs.readFileSync(schema_filename, 'utf8');
-} catch (err) {
-    console.log(`\x1b[0;31mERROR\x1b[0m reading schema '${schema_filename}':`);
-    console.error(err);
-    process.exitCode = 1;
-    schema = null;
-}
-if (schema) {
-    let compiledSchema;
-    try {
-        compiledSchema = ajv.compile(JSON.parse(schema))
-    } catch (err) {
-        console.log(`\x1b[0;31mERROR\x1b[0m parsing schema '${schema_filename}':`);
-        console.error(err);
-        process.exitCode = 1;
-        compiledSchema = null;
-    }
-    if (compiledSchema) {
-        if (fs.existsSync(config_filename)) {
-            try {
-                const config_data_raw = fs.readFileSync(config_filename, 'utf8');
-                config_data = JSON.parse(config_data_raw);
-            } catch (err) {
-                console.log(`\x1b[0;31mERROR\x1b[0m reading and parsing config file '${config_filename}':`);
-                console.error(err);
-                config_data = null;
-                process.exitCode = 1;
-            }
-            if (config_data) {
-                try {
-                    const valid = compiledSchema ? compiledSchema(config_data) : null;
-                    if (valid) {
-                        console.log(`use config file '${config_filename}'`);
-                    } else {
-                        console.log(`\x1b[0;31mERROR\x1b[0m invalid config file '${config_filename}':`);
-                        console.error(compiledSchema ? compiledSchema.errors : 'error unknown')
-                        config_data = null;
-                        process.exitCode = 1;
-                    }
-                } catch (err) {
-                    console.log(`\x1b[0;31mERROR\x1b[0m invalid config file '${config_filename}':`);
-                    console.error(err);
-                    config_data = null;
-                    process.exitCode = 1;
-                }
-            }
-        } else {
-            console.log(`\x1b[0;31mERROR\x1b[0m config file '${config_filename}' not found`);
-            process.exitCode = 1;
-        }
-    }
-}
+
 if (config_data) {
     // todo: use config_data.creator ??;
 

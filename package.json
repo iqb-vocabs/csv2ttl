@@ -20,7 +20,7 @@
   "homepage": "https://github.com/iqb-berlin/responses#readme",
   "dependencies": {
     "csv-parse": "^5.5.0",
-    "json2csv": "^6.0.0-alpha.2",
+    "@json2csv/plainjs": "^7.0.3",
     "randexp": "^0.5.3",
     "ajv": "^8.12.0"
   },

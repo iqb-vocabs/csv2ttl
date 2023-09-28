@@ -1,105 +1,55 @@
 #!/usr/bin/env node
-import { parse as csv_parse} from 'csv-parse/sync';
-import { StringIdGenerator } from "./idGenerator";
+import {ConfigFileFactory, VocabularyData} from "./config-file.factory";
+import {CsvFactory} from "./csv.factory";
+import * as RandExp from "randexp";
 
 const fs = require('fs');
-const csv = require('csv-parser');
-const json2csv = require('json2csv').parse;
-
 
 let data_folder = '.';
 if (process.argv[2]) {
     data_folder = `${data_folder}/${process.argv[2]}`;
 }
-const config_filename = `${data_folder}/csv2ttl_config.json`;
-
-
-if (fs.existsSync(config_filename)) {
+const config_data = ConfigFileFactory.load(data_folder);
+if (config_data) {
     // Read the JSON configuration file
-    const config_data_raw = fs.readFileSync(config_filename, 'utf8');
-    const config_data = JSON.parse(config_data_raw);
     const fileList: { [name: string]: string } = {};
     const csvDelimiter = config_data.csv_delimiter || ';';
-    const fields = ['notation','title','description','id'];
-    const opts = {
-        fieldNames: fields,
-        quote: '',
-        delimiter:';'
-    };
 
     fs.readdirSync(data_folder).forEach((file: string) => {
         fileList[file.toUpperCase()] = `${data_folder}/${file}`;
     });
 
     //add id if it does not exist
-    config_data.vocabularies.forEach((voc: any) => {
+    let fileOkCount = 0;
+    let idsAddedCount = 0;
+    config_data.vocabularies.forEach((voc: VocabularyData) => {
         const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
-
         if (voc_filename) {
-            console.log(`Adding ids to '${voc_filename}'`);
-            const data_raw = fs.readFileSync(voc_filename, 'utf8');
-            const data = csv_parse(data_raw, {
-                columns: true,
-                skip_empty_lines: true,
-                delimiter: csvDelimiter
-            });
-            let dataArray: any[];
-            dataArray = [];
-
-            //store all ids in an array
-            //const old_ids: String[] = data[];
-            let oldIds: string[] = [];
-            let counter = 0;
-            data.forEach((d: any) => {
-                if (d.id != "") {
-                    counter++;
-                    oldIds.push(d.id);
-                }
-            });
-
-            if (counter == 0) {
-                const generator = new StringIdGenerator([]);
-                while (data.length != counter) {
-                    generator.generateId();
-                    counter++;
-                }
-                //generator.orderIds();
-                let position = 0;
-                fs.createReadStream(voc_filename)
-                    .pipe(csv({separator: csvDelimiter}))
-                    .on('data', function (row: any) {
-                        if (row.id === "") {
-                            row.id = generator.elementAtPosition(position);
-                            position++;
+            const csvData = CsvFactory.load(voc_filename, csvDelimiter);
+            if (csvData) {
+                const idList = csvData.map(c => c.id).filter(c => c && c.length > 0);
+                if (idList.length !== csvData.length) {
+                    csvData.forEach(c => {
+                        while (!(c && c.id.length > 0)) {
+                            const randexp = new RandExp(/^[2345679abcdefghprqstuvxyz]{3}/);
+                            const newId = randexp.gen();
+                            if (!idList.includes(newId)) {
+                                c.id = newId;
+                                idList.push(newId);
+                                idsAddedCount += 1;
+                            }
                         }
-                        dataArray.push(row);
-                    })
-                    .on('end', () => {
-                        let result = json2csv(dataArray, opts);
-                        result = result.replaceAll(/"/g, '');
-                        fs.writeFileSync(voc_filename, result);
                     });
-            }
-
-            if (counter < data.length) {
-                const generator = new StringIdGenerator(oldIds);
-                fs.createReadStream(voc_filename)
-                    .pipe(csv({separator: csvDelimiter}))
-                    .on('data', function (row: any) {
-                        if (row.id === "") {
-                            row.id = generator.generateId();
-                        }
-                        dataArray.push(row);
-                    })
-                    .on('end', () => {
-                        let result = json2csv(dataArray, opts);
-                        result = result.replaceAll(/"/g, '');
-                        fs.writeFileSync(voc_filename, result);
-                    });
+                    if (CsvFactory.write(voc_filename, csvData, csvDelimiter)) {
+                        fileOkCount += 1;
+                    }
+                }
             }
         }
     });
-} else {
-    console.log(`\x1b[0;31mERROR\x1b[0m File '${config_filename}' not found`);
-    process.exitCode = 1;
+    if (fileOkCount > 0) {
+        console.log(`${idsAddedCount} ID(s) changed in ${fileOkCount} file(s)`);
+    } else {
+        console.log(`no missing IDs in ${config_data.vocabularies.length} data file(s) - no changes`);
+    }
 }
