@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import {ConfigFileFactory, VocabularyData} from "./config-file.factory";
-import {CsvFactory} from "./csv.factory";
+import { ConfigFileFactory, VocabularyData } from "./config-file.factory";
+import { CsvFactory } from "./csv.factory";
 import * as RandExp from "randexp";
 
 const fs = require('fs');

@@ -1,28 +1,24 @@
 #!/usr/bin/env node
-import { parse as csv_parse} from 'csv-parse/sync';
+import {ConfigFileFactory} from "./config-file.factory";
+import {CsvFactory} from "./csv.factory";
 
 const fs = require('fs');
-const schema_filename = `${__dirname}/csv2ttl_config.schema.json`;
 
 let data_folder = '.';
 if (process.argv[2]) {
     data_folder = `${data_folder}/${process.argv[2]}`;
 }
-const config_filename = `${data_folder}/csv2ttl_config.json`;
 let output_folder = './dist';
 if (process.argv[3]) {
     output_folder = process.argv[3];
 }
-
 function getNotationDeep(notation: string): number{
     return (notation.split(".")).length;
 }
 
-
+const config_data = ConfigFileFactory.load(data_folder);
 
 if (config_data) {
-    // todo: use config_data.creator ??;
-
     let fileList: { [name: string]: string } = {};
     fs.readdirSync(data_folder).forEach((file: string) => {
         fileList[file.toUpperCase()] = `${data_folder}/${file}`;
@@ -58,20 +54,7 @@ if (config_data) {
             let stout = header;
 
             if (voc_filename) {
-                let data;
-                try {
-                    const data_raw = fs.readFileSync(voc_filename, 'utf8');
-                    data = csv_parse(data_raw, {
-                        columns: true,
-                        skip_empty_lines: true,
-                        delimiter: csvDelimiter
-                    });
-                } catch (err) {
-                    console.log(`\x1b[0;33mWARNING\x1b[0m reading and parsing csv file '${voc_filename}' failed - ignore:`);
-                    console.error(err);
-                    data = null;
-                }
-
+                const data = CsvFactory.load(voc_filename, csvDelimiter);
                 if (data && data.length > 0) {
                     console.log(`Processing '${voc_filename}': ${data.length} records found`);
                     // initiation of variables for loop:
@@ -185,8 +168,6 @@ if (config_data) {
                     stout = `${stout}${footer}`;
 
                     fs.writeFileSync(out_path, stout, {encoding: 'utf8'});
-                } else {
-                    console.log(`\x1b[0;33mWARNING\x1b[0m File '${voc_filename}' empty - ignore`);
                 }
             } else {
                 console.log(`\x1b[0;33mWARNING\x1b[0m File '${data_folder}/${voc.id}.csv' not found - ignore`);

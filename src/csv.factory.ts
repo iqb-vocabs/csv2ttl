@@ -60,7 +60,7 @@ export abstract class CsvFactory {
             delimiter: csvDelimiter
         });
         try {
-            const fileContent = parser.parse(data).replaceAll(/"/g, '');
+            const fileContent = parser.parse(data); // .replaceAll(/"/g, '')
             fs.writeFileSync(dataFilename, fileContent);
         } catch (err) {
             console.log(`\x1b[0;31mERROR\x1b[0m unable to write data file '${dataFilename}':`);
