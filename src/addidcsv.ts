@@ -31,7 +31,7 @@ if (config_data) {
                 if (idList.length !== csvData.length) {
                     csvData.forEach(c => {
                         while (!(c && c.id.length > 0)) {
-                            const randexp = new RandExp(/^[2345679abcdefghprqstuvxyz]{3}/);
+                            const randexp = new RandExp(config_data.idPattern);
                             const newId = randexp.gen();
                             if (!idList.includes(newId)) {
                                 c.id = newId;

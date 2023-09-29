@@ -19,6 +19,8 @@ export interface ConfigData {
     }[];
     csv_delimiter: string;
     base: string;
+    outDir: string;
+    idPattern: string;
     creator: any;
     vocabularies: VocabularyData[];
 }

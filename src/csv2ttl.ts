@@ -8,17 +8,17 @@ let data_folder = '.';
 if (process.argv[2]) {
     data_folder = `${data_folder}/${process.argv[2]}`;
 }
-let output_folder = './dist';
-if (process.argv[3]) {
-    output_folder = process.argv[3];
-}
+
 function getNotationDeep(notation: string): number{
     return (notation.split(".")).length;
 }
 
 const config_data = ConfigFileFactory.load(data_folder);
-
 if (config_data) {
+    let output_folder = './dist';
+    if (config_data.outDir) {
+        output_folder = config_data.outDir;
+    }
     let fileList: { [name: string]: string } = {};
     fs.readdirSync(data_folder).forEach((file: string) => {
         fileList[file.toUpperCase()] = `${data_folder}/${file}`;

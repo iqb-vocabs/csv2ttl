@@ -43,7 +43,18 @@
       "description": "CSV is not a strict standard, so the delimiter is not fixed and must be declared."
     },
     "base": {
-      "type": "string"
+      "type": "string",
+      "description": "The uri of the vocabulary and of every entry needs a prefix uri."
+    },
+    "outDir": {
+      "type": "string",
+      "description": "Folder where the ttl-output is written to.",
+      "default": "./dist"
+    },
+    "idPattern": {
+      "type": "string",
+      "description": "The ids are generated with the randexp lib, which takes a regular expression as input.",
+      "default": "^[abcdefghprqstuvxyz]{1}[2345679]{1}[abcdefghprqstuvxyz]{1}$"
     },
     "vocabularies": {
       "type": "array",
@@ -100,5 +111,5 @@
       "minItems": 1
     }
   },
-  "required": ["id", "title", "creator", "vocabularies"]
+  "required": ["id", "title", "creator", "base", "vocabularies"]
 }
