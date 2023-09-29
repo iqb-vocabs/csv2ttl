@@ -14,6 +14,7 @@ if (config_data) {
     // Read the JSON configuration file
     const fileList: { [name: string]: string } = {};
     const csvDelimiter = config_data.csv_delimiter || ';';
+    const idPattern = config_data.idPattern || "^[abcdefghprqstuvxyz][2345679][abcdefghprqstuvxyz]$";
 
     fs.readdirSync(data_folder).forEach((file: string) => {
         fileList[file.toUpperCase()] = `${data_folder}/${file}`;
@@ -33,7 +34,7 @@ if (config_data) {
                 if (idList.length !== csvData.length) {
                     csvData.forEach(c => {
                         while (!(c && c.id.length > 0)) {
-                            const randexp = new RandExp(config_data.idPattern);
+                            const randexp = new RandExp(idPattern);
                             const newId = randexp.gen();
                             if (!idList.includes(newId)) {
                                 c.id = newId;

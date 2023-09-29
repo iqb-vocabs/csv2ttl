@@ -54,7 +54,7 @@
     "idPattern": {
       "type": "string",
       "description": "The ids are generated with the randexp lib, which takes a regular expression as input.",
-      "default": "^[abcdefghprqstuvxyz]{1}[2345679]{1}[abcdefghprqstuvxyz]{1}$"
+      "default": "^[abcdefghprqstuvxyz][2345679][abcdefghprqstuvxyz]$"
     },
     "vocabularies": {
       "type": "array",
