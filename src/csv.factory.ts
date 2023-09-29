@@ -9,7 +9,7 @@ export interface CsvData {
 }
 
 export abstract class CsvFactory {
-    public static load(dataFilename: string, csvDelimiter: string): CsvData[] | null {
+    public static load(dataFilename: string, csvDelimiter: string, allowEmptyId: boolean): CsvData[] | null {
         const fs = require('fs');
         let csvData: CsvData[] | null = null;
         if (fs.existsSync(dataFilename)) {
@@ -28,21 +28,77 @@ export abstract class CsvFactory {
             }
             if (csvData) {
                 const uniqueIdList: string[] = [];
+                const uniqueTitleList: string[] = [];
+                const uniqueNotationList: string[] = [];
+                const uniqueIdErrors: string[] = [];
+                const uniqueTitleErrors: string[] = [];
+                const uniqueNotationErrors: string[] = [];
                 let fatalError = false;
+                let recordNumber = 1;
+                const notationPattern = /^([1-9][0-9]*)(\.[1-9][0-9]*)*$/;
                 csvData.forEach(c => {
+                    recordNumber += 1;
                     if (c.id) {
                         if (uniqueIdList.includes(c.id)) {
-                            fatalError = true;
-                        } else  {
+                            uniqueIdErrors.push(`#${recordNumber}`);
+                        } else {
                             uniqueIdList.push(c.id);
                         }
+                    } else if (!allowEmptyId) {
+                        uniqueIdErrors.push(`#${recordNumber}`);
+                    }
+                    if (c.notation) {
+                        const notationMatches = c.notation.match(notationPattern);
+                        if (notationMatches) {
+                            if (uniqueNotationList.includes(c.notation)) {
+                                uniqueNotationErrors.push(`#${recordNumber}`);
+                            } else {
+                                uniqueNotationList.push(c.notation);
+                            }
+                        } else {
+                            uniqueNotationErrors.push(`#${recordNumber}`);
+                        }
+                    }
+                    if (c.title) {
+                        const checkTitleExpression = `${c.notation || ''}-${c.title}`;
+                        if (uniqueTitleList.includes(checkTitleExpression)) {
+                            uniqueTitleErrors.push(`#${recordNumber}`);
+                        } else {
+                            uniqueTitleList.push(checkTitleExpression);
+                        }
+                    } else {
+                        uniqueTitleErrors.push(`#${recordNumber}`);
                     }
                 });
+                const allNotations = csvData.map(c => c.notation).filter(n => n && n.length > 0);
+                if (allNotations.length > 0) {
+                    if (allNotations.length < csvData.length) {
+                        console.log(`\x1b[0;31mERROR\x1b[0m Notations must be given all or none in data file '${dataFilename}'`);
+                        fatalError = true;
+                    }
+                    if (uniqueNotationErrors.length > 0) {
+                        console.log(`\x1b[0;31mERROR\x1b[0m Notations must be unique and valid in data file '${dataFilename}' (${uniqueNotationErrors.join(', ')})`);
+                        fatalError = true;
+                    }
+                }
+                if (uniqueTitleErrors.length > 0) {
+                    console.log(`\x1b[0;31mERROR\x1b[0m Titles must be unique and not empty in data file '${dataFilename}' (${uniqueTitleErrors.join(', ')})`);
+                    fatalError = true;
+                }
+                if (uniqueIdErrors.length > 0) {
+                    if (allowEmptyId) {
+                        console.log(`\x1b[0;31mERROR\x1b[0m IDs must be unique in data file '${dataFilename}' (${uniqueIdErrors.join(', ')})`);
+                    } else {
+                        console.log(`\x1b[0;31mERROR\x1b[0m IDs must be unique and not empty in data file '${dataFilename}' (${uniqueIdErrors.join(', ')})`);
+                    }
+                    fatalError = true;
+                }
+
                 if (fatalError) {
-                    console.log(`\x1b[0;31mERROR\x1b[0m IDs not unique in data file '${dataFilename}'`);
                     csvData = null;
                     process.exitCode = 1;
                 }
+
             }
         } else {
             console.log(`\x1b[0;31mERROR\x1b[0m data file '${dataFilename}' not found`);

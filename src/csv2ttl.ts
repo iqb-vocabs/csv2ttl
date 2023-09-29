@@ -54,7 +54,7 @@ if (config_data) {
             let stout = header;
 
             if (voc_filename) {
-                const data = CsvFactory.load(voc_filename, csvDelimiter);
+                const data = CsvFactory.load(voc_filename, csvDelimiter, false);
                 if (data && data.length > 0) {
                     console.log(`Processing '${voc_filename}': ${data.length} records found`);
                     // initiation of variables for loop:
@@ -168,9 +168,11 @@ if (config_data) {
                     stout = `${stout}${footer}`;
 
                     fs.writeFileSync(out_path, stout, {encoding: 'utf8'});
+                } else {
+                    console.log(`\x1b[0;33mWARNING\x1b[0m Errors in file '${voc_filename}' - ignore`);
                 }
             } else {
-                console.log(`\x1b[0;33mWARNING\x1b[0m File '${data_folder}/${voc.id}.csv' not found - ignore`);
+                console.log(`\x1b[0;33mWARNING\x1b[0m file '${data_folder}/${voc.id}.csv' not found - ignore`);
             }
         }
     });

@@ -21,12 +21,14 @@ if (config_data) {
 
     //add id if it does not exist
     let fileOkCount = 0;
+    let fileAnalysedCount = 0;
     let idsAddedCount = 0;
     config_data.vocabularies.forEach((voc: VocabularyData) => {
         const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
         if (voc_filename) {
-            const csvData = CsvFactory.load(voc_filename, csvDelimiter);
+            const csvData = CsvFactory.load(voc_filename, csvDelimiter, true);
             if (csvData) {
+                fileAnalysedCount += 1;
                 const idList = csvData.map(c => c.id).filter(c => c && c.length > 0);
                 if (idList.length !== csvData.length) {
                     csvData.forEach(c => {
@@ -44,12 +46,14 @@ if (config_data) {
                         fileOkCount += 1;
                     }
                 }
+            } else {
+                console.log(`\x1b[0;33mWARNING\x1b[0m Errors in file '${voc_filename}' - ignore`);
             }
         }
     });
     if (fileOkCount > 0) {
-        console.log(`${idsAddedCount} ID(s) changed in ${fileOkCount} file(s)`);
+        console.log(`${idsAddedCount} ID(s) changed in ${fileOkCount} of ${fileAnalysedCount} file(s)`);
     } else {
-        console.log(`no missing IDs in ${config_data.vocabularies.length} data file(s) - no changes`);
+        console.log(`no missing IDs in ${fileAnalysedCount} data file(s) - no changes`);
     }
 }
