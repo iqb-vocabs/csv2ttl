@@ -15,7 +15,7 @@ function getNotationDeep(notation: string): number{
 
 const config_data = ConfigFileFactory.load(data_folder);
 if (config_data) {
-    let output_folder = './dist';
+    let output_folder = '.';
     if (config_data.outDir) {
         output_folder = config_data.outDir;
     }

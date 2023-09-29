@@ -1,9 +1,9 @@
 {
   "name": "@iqb/csv2ttl",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "MIT",
-  "description": "Data interfaces for verona related assessment applications",
+  "description": "Generate ttl files for publishing metadata vocabularies from csv",
   "scripts": {
     "add_ids": "ts-node src/addidcsv.ts sample_data",
     "generate_ttl": "ts-node src/csv2ttl.ts sample_data",

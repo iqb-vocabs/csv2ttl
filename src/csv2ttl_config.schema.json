@@ -49,7 +49,7 @@
     "outDir": {
       "type": "string",
       "description": "Folder where the ttl-output is written to.",
-      "default": "./dist"
+      "default": "."
     },
     "idPattern": {
       "type": "string",
