@@ -41,14 +41,14 @@ if (config_data) {
                 footer = `${baseUrl}\n` +
                     `\ta skos:ConceptScheme;\n` +
                     `\tdct:creator "${config_data.creator}"@${voc.title[0].lang};\n` +
-                    `\tdct:title "${config_data.title[0].value.replace('^',';')} - ${voc.title[0].value.replace('^',';')}"@${voc.title[0].lang};\n` +
+                    `\tdct:title "${config_data.title[0].value} - ${voc.title[0].value}"@${voc.title[0].lang};\n` +
                     `\tskos:hasTopConcept`;
             else
                 footer = `${baseUrl}\n` +
                     `\ta skos:ConceptScheme;\n` +
                     `\tdct:creator "${config_data.creator}"@${voc.title[0].lang};\n` +
-                    `\tdct:title "${config_data.title[0].value.replace('^',';')} - ${voc.title[0].value.replace('^',';')}"@${voc.title[0].lang};\n` +
-                    `\tdct:description "${voc.description[0].value.replace('^',';')}"@${voc.description[0].lang.replace('^',';')};\n` +
+                    `\tdct:title "${config_data.title[0].value} - ${voc.title[0].value}"@${voc.title[0].lang};\n` +
+                    `\tdct:description "${voc.description[0].value}"@${voc.description[0].lang};\n` +
                     `\tskos:hasTopConcept`;
 
             let stout = header;
@@ -88,15 +88,15 @@ if (config_data) {
                                     `\tskos:inScheme ${baseUrl};\n` +
                                     `\tskos:notation "${d.notation}";\n` +
                                     `\tskos:topConceptOf ${oldUrl};\n` +
-                                    `\tskos:prefLabel "${d.title.replace('^',';')}"@${voc.title[0].lang}`;
+                                    `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
                             else
                                 body = `${body}\t a skos:Concept;\n` +
                                     `\tskos:inScheme ${baseUrl};\n` +
                                     `\tskos:notation "${d.notation}";\n` +
                                     `\tskos:broader ${oldUrl};\n` +
-                                    `\tskos:prefLabel "${d.title.replace('^',';')}"@${voc.title[0].lang}`;
+                                    `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
                             if (d.description != "")
-                                body = body + `; \n\tskos:description "${d.description.replace('^',';')}"@${voc.title[0].lang}. \n`;
+                                body = body + `; \n\tskos:description "${d.description}"@${voc.title[0].lang}. \n`;
                             else
                                 body = body + `.\n`;
                             nodesStack.push(newUrl);
@@ -141,15 +141,15 @@ if (config_data) {
                                     `\tskos:inScheme ${oldUrl};\n` +
                                     `\tskos:notation "${d.notation}";\n` +
                                     `\tskos:topConceptOf ${oldUrl};\n` +
-                                    `\tskos:prefLabel "${d.title.replace('^',';')}"@${voc.title[0].lang}`;
+                                    `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
                             else
                                 body = `${body}\t a skos:Concept;\n` +
                                     `\tskos:inScheme ${baseUrl};\n` +
                                     `\tskos:notation "${d.notation}";\n` +
                                     `\tskos:broader ${oldUrl};\n` +
-                                    `\tskos:prefLabel "${d.title.replace('^',';')}"@${voc.title[0].lang}`;
+                                    `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
                             if (d.description != "")
-                                body = body + `; \n\tskos:description "${d.description.replace('^',';')}"@${voc.title[0].lang} `;
+                                body = body + `; \n\tskos:description "${d.description}"@${voc.title[0].lang} `;
 
                             bodyStack.push(body);
                             nodesStack.push(newUrl);
