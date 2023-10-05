@@ -21,7 +21,7 @@ export interface ConfigData {
     base: string;
     outDir: string;
     idPattern: string;
-    creator: any;
+    creator: string;
     vocabularies: VocabularyData[];
 }
 
