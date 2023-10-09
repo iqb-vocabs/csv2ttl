@@ -19,15 +19,19 @@
   },
   "homepage": "https://github.com/iqb-vocabs/csv2ttl#readme",
   "dependencies": {
-    "csv-parse": "^5.5.0",
     "@json2csv/plainjs": "^7.0.3",
-    "randexp": "^0.5.3",
-    "ajv": "^8.12.0"
+    "ajv": "^8.12.0",
+    "csv-parse": "^5.5.0",
+    "randexp": "^0.5.3"
   },
   "devDependencies": {
+    "@iqb/eslint-config": "^2.1.1",
     "@types/node": "^20.4.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "eslintConfig": {
+    "extends": "@iqb/eslint-config"
   },
   "bin": {
     "csv2ttl": "./dist_npm/csv2ttl.js",
