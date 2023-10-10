@@ -18,6 +18,9 @@ if (config_data) {
     let output_folder = '.';
     if (config_data.outDir) {
         output_folder = config_data.outDir;
+        if (!fs.existsSync(output_folder)){
+            fs.mkdirSync(output_folder);
+        }
     }
     let fileList: { [name: string]: string } = {};
     fs.readdirSync(data_folder).forEach((file: string) => {
