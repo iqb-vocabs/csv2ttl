@@ -35,7 +35,7 @@ export abstract class CsvFactory {
                 const uniqueNotationErrors: string[] = [];
                 let fatalError = false;
                 let recordNumber = 1;
-                const notationPattern = /^([1-9][0-9]*)(\.[1-9][0-9]*)*$/;
+                const notationPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
                 csvData.forEach(c => {
                     recordNumber += 1;
                     if (c.id) {
