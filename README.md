@@ -17,10 +17,10 @@ So we support only a special use case of ttf/rdf: Hierarchical vocabularies. Her
 
 Look at the simplest example:
 ```csv
-notation;title;description;id
-;geschlossen;;
-;halboffen;;
-;offen;;
+notation,title,description,id
+,geschlossen,,
+,halboffen,,
+,offen,,
 ```
 The first line and therefor the description of data structure is required. You see, that only the title is given.
 
@@ -76,6 +76,6 @@ This json-file lists all vocabularies (i.e. csv-files) to convert and provides a
 | base          | base-url to form the uri of the voc                                                                                                                                                                                                                               |                        *required*                        |
 | outDir        | target folder for the ttl-files                                                                                                                                                                                                                                   |                           '.'                            |
 | idPattern     | when the IDs are generated, an external lib `randex` is used. This parameter value is directly given to this lib and must be an regular expression. It's kind of tricky and the lib is not free of problems, so play around with it before setting the parameter. | '^\[abcdefghprqstuvxyz]\[2345679]\[abcdefghprqstuvxyz]$' |
-| vocabularies  | Here you let the generator know what files should be included. Each voc must have an id and a title, and a description can be given.                                                                                                                              |                           '.'                            |
+| vocabularies  | Here you let the generator know what files should be included. Each voc must have an id and a title. Additionally, you can provide a description, a filename for the source and a filename for the target.                                                        |                           '.'                            |
 
 Before processing the config file it is validated. You'll get errors if it's malformed.
