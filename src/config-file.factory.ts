@@ -2,6 +2,8 @@ import Ajv from "ajv";
 
 export interface VocabularyData {
     id: string;
+    filenameSource: string;
+    filenameTarget: string;
     title: {
         lang: string;
         value: string
@@ -87,6 +89,22 @@ export abstract class ConfigFileFactory {
             }
         }
         return configData;
+    }
+
+    public static getFilenameSource(vocData: VocabularyData): string {
+        let vocFilename = vocData.filenameSource || vocData.id;
+        if (!vocFilename.toUpperCase().endsWith('.CSV')) vocFilename += '.CSV';
+        return vocFilename;
+    }
+    public static getFilenameTarget(vocData: VocabularyData): string {
+        let vocFilename = vocData.filenameTarget;
+        if (!vocFilename && vocData.filenameSource) {
+            vocFilename = vocData.filenameSource;
+            if (vocFilename.toUpperCase().endsWith('.CSV')) vocFilename = vocFilename.substring(-4) + '.ttl';
+        }
+        if (!vocFilename) vocFilename = vocData.id;
+        if (!vocFilename.toUpperCase().endsWith('.TTL')) vocFilename += '.ttl';
+        return vocFilename;
     }
 }
 

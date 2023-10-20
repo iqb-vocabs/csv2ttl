@@ -25,7 +25,7 @@ if (config_data) {
     let fileAnalysedCount = 0;
     let idsAddedCount = 0;
     config_data.vocabularies.forEach((voc: VocabularyData) => {
-        const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
+        const voc_filename = fileList[ConfigFileFactory.getFilenameSource(voc).toUpperCase()];
         if (voc_filename) {
             const csvData = CsvFactory.load(voc_filename, csvDelimiter, true);
             if (csvData) {
@@ -50,6 +50,8 @@ if (config_data) {
             } else {
                 console.log(`\x1b[0;33mWARNING\x1b[0m Errors in file '${voc_filename}' - ignore`);
             }
+        } else {
+            console.log(`\x1b[0;33mWARNING\x1b[0m File for '${voc.id}' not found - ignore`);
         }
     });
     if (fileOkCount > 0) {
