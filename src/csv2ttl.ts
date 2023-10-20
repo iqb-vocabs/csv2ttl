@@ -34,10 +34,20 @@ if (config_data) {
 
     config_data.vocabularies.forEach((voc: any) => {
         if (config_data) {
-            const voc_filename = fileList[`${voc.id.toUpperCase()}.CSV`];
+            console.log(`${voc.id}: ${voc.filenameSource}, ${voc.filenameTarget}`)
+            let voc_filename = (voc.filenameSource || voc.id).toUpperCase();
+            if (!voc_filename.endsWith('.CSV')) voc_filename += '.CSV';
+            voc_filename = fileList[voc_filename];
+            let out_path = voc.filenameTarget;
+            if (!out_path && voc.filenameSource) {
+                out_path = voc.filenameSource;
+                if (out_path.toUpperCase().endsWith('.CSV')) out_path = out_path.substring(-4) + '.ttl';
+            }
+            if (!out_path) out_path = voc.id;
+            if (!out_path.toUpperCase().endsWith('.TTL')) out_path += '.ttl';
+            out_path = `${output_folder}/${out_path}`;
             const header = `${stout_base}/${voc.id}/#>. \n` +
                 `@prefix n1: <${config_data.base}/${voc.id}/>. \n\n`;
-            const out_path = `${output_folder}/${voc.title[0].value.replace(/ /g, "_")}.ttl`;
             const baseUrl = "n0:";
             let footer = "";
             if (voc.description[0].value === "")

@@ -20,6 +20,7 @@
           "value": "Itemformat Englisch Sek I"
         }
       ],
+      "filenameTarget": "en_format",
       "description": [
         {
           "lang": "de",
@@ -35,6 +36,7 @@
           "value": "Itemformat 3er Liste"
         }
       ],
+      "filenameTarget": "sieben",
       "description": [
         {
           "lang": "de",

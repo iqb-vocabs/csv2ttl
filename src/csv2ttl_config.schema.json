@@ -86,6 +86,14 @@
             "minItems": 1,
             "description": "Title of vocabulary"
           },
+          "filenameSource": {
+            "type": "string",
+            "description": "Filename of the csv file of the vocabulary. Default: <id>.csv"
+          },
+          "filenameTarget": {
+            "type": "string",
+            "description": "Filename of the ttl file of the vocabulary. Default: <title>.ttl"
+          },
           "description": {
             "type": "array",
             "items": {
