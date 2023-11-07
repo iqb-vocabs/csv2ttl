@@ -30,15 +30,14 @@ if (config_data) {
 
     let stout_base:string = "@prefix dct: <http://purl.org/dc/terms/>.\n" +
         "@prefix skos: <http://www.w3.org/2004/02/skos/core#>. \n"+
-        `@prefix n0: <${config_data.base}`;
+        `@prefix n: <${config_data.base}`;
 
     config_data.vocabularies.forEach((voc: any) => {
         if (config_data) {
             const voc_filename = fileList[ConfigFileFactory.getFilenameSource(voc).toUpperCase()];
             const out_path = `${output_folder}/${ConfigFileFactory.getFilenameTarget(voc)}`;
-            const header = `${stout_base}/${voc.id}/>. \n` +
-                `@prefix n1: <${config_data.base}/${voc.id}/>. \n\n`;
-            const baseUrl = "n0:";
+            const header = `${stout_base}/${voc.id}/>. \n\n`;
+            const baseUrl = "n:";
             let footer = "";
             if (voc.description[0].value === "")
                 footer = `${baseUrl}\n` +
@@ -84,7 +83,7 @@ if (config_data) {
                         }
                         if (deepNext === deep || deepNext < deep) {
                             oldUrl = urlStack[urlStack.length - 1];
-                            const newUrl = `n1:${d.id}`;
+                            const newUrl = `n:${d.id}`;
                             let body = `${newUrl}\n`;
                             if (oldUrl === baseUrl)
                                 body = `${body}\t a skos:Concept;\n` +
@@ -137,7 +136,7 @@ if (config_data) {
                                 */
 
                             let oldUrl = urlStack[urlStack.length - 1];
-                            const newUrl = `n1:${d.id}`;
+                            const newUrl = `n:${d.id}`;
                             let body = `${newUrl}\n`;
                             if (oldUrl === baseUrl)
                                 body = `${body}\t a skos:Concept;\n` +
