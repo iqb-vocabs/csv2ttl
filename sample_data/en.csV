@@ -1,13 +1,13 @@
-notation;title;description;id
-1;gap-filling;;5c4
-2;multiple choice;;re4
-3;multiple matching;;46g
-4;note taking;;fsa
-5;sentence completion;;zuh
-6;sequencing;;795
-7;short answer;Kurzantwort;hsd
-8;table completion;;x66
-9;true-false;;5ru
-10;true-false-justification;;562
-11;true-false-line;;ssh
-12;true-false-not given;;q55
+notation,title,description,id
+1,gap-filling,,5c4
+1.1,multiple choice,,re4
+1.2,multiple matching,,46g
+1.3,note taking,,fsa
+2,sentence completion,,zuh
+2.1,sequencing,,795
+2.1.1,short answer,Kurzantwort,hsd
+2.2,table completion,,x66
+2.2.1,true-false,,5ru
+2.2.2,true-false-justification,,562
+2.2.2.1,true-false-line,,ssh
+2.2.2.2,true-false-not given,,q55

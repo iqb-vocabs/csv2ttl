@@ -36,7 +36,7 @@ if (config_data) {
         if (config_data) {
             const voc_filename = fileList[ConfigFileFactory.getFilenameSource(voc).toUpperCase()];
             const out_path = `${output_folder}/${ConfigFileFactory.getFilenameTarget(voc)}`;
-            const header = `${stout_base}/${voc.id}/#>. \n` +
+            const header = `${stout_base}/${voc.id}/>. \n` +
                 `@prefix n1: <${config_data.base}/${voc.id}/>. \n\n`;
             const baseUrl = "n0:";
             let footer = "";

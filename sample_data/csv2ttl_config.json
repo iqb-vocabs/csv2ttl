@@ -6,7 +6,7 @@
       "value": "Vokabulare zur Beschreibung des Itemformates"
     }
   ],
-  "csv_delimiter": ";",
+  "csv_delimiter": ",",
   "base": "https://w3id.org/iqb/v34",
   "outDir": "dist_ttl",
   "idPattern": "^[abcdefghprqstuvxyz]{1}[2345679]{1}[abcdefghprqstuvxyz]{1}$",
@@ -20,7 +20,8 @@
           "value": "Itemformat Englisch Sek I"
         }
       ],
-      "filenameTarget": "en_format",
+      "filenameSource": "en.csv",
+      "filenameTarget": "en.ttl",
       "description": [
         {
           "lang": "de",
@@ -36,7 +37,8 @@
           "value": "Itemformat 3er Liste"
         }
       ],
-      "filenameTarget": "sieben",
+      "filenameSource": "3e.csv",
+      "filenameTarget": "3e.ttl",
       "description": [
         {
           "lang": "de",
@@ -52,26 +54,12 @@
           "value": "Itemformat 5er Liste"
         }
       ],
+      "filenameSource": "5e.csv",
+      "filenameTarget": "5e.ttl",
       "description": [
         {
           "lang": "de",
           "value": "Itemformat 5er Liste description"
-        }
-      ]
-    },
-    {
-      "id": "7e",
-      "title": [
-        {
-          "lang": "de",
-          "value": "Itemformat 7er Liste"
-        }
-      ],
-      "filenameSource": "7eiuwzej.csv",
-      "description": [
-        {
-          "lang": "de",
-          "value": "Itemformat 7er Liste description"
         }
       ]
     }
