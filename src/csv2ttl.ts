@@ -40,20 +40,38 @@ if (config_data) {
                 `@prefix n1: <${config_data.base}/${voc.id}/>. \n\n`;
             const baseUrl = "n0:";
             let footer = "";
+            //check if there is more than one lang
+
+            let num_lang = config_data.title.length;
+            let main_title = "";
+
+            let creator ="";
+            for (let i = 0; i<num_lang-1;i++){
+                main_title = main_title +`"${config_data.title[i].value} - ${voc.title[i].value}"@${voc.title[i].lang},\n\t`;
+                creator = creator + `"${config_data.creator}"@${voc.title[i].lang},\n\t`;
+            }
+            main_title = main_title +`"${config_data.title[num_lang-1].value} - ${voc.title[num_lang-1].value}"@${voc.title[num_lang-1].lang};\n`;
+            creator = creator + `"${config_data.creator}"@${voc.title[num_lang-1].lang};\n`;
+
             if (voc.description[0].value === "")
                 footer = `${baseUrl}\n` +
                     `\ta skos:ConceptScheme;\n` +
-                    `\tdct:creator "${config_data.creator}"@${voc.title[0].lang};\n` +
-                    `\tdct:title "${config_data.title[0].value} - ${voc.title[0].value}"@${voc.title[0].lang};\n` +
+                    `\tdct:creator ${creator}` +
+                    `\tdct:title ${main_title}` +
                     `\tskos:hasTopConcept`;
-            else
+            else {
+                let main_description = "";
+                for (let i = 0; i<num_lang-1;i++ ){
+                    main_description = main_description +`"${voc.description[i].value}"@${voc.description[i].lang},\n\t`;
+                }
+                main_description = main_description +`"${voc.description[num_lang-1].value}"@${voc.description[num_lang-1].lang};\n`;
                 footer = `${baseUrl}\n` +
                     `\ta skos:ConceptScheme;\n` +
-                    `\tdct:creator "${config_data.creator}"@${voc.title[0].lang};\n` +
-                    `\tdct:title "${config_data.title[0].value} - ${voc.title[0].value}"@${voc.title[0].lang};\n` +
-                    `\tdct:description "${voc.description[0].value}"@${voc.description[0].lang};\n` +
+                    `\tdct:creator ${creator}` +
+                    `\tdct:title ${main_title}` +
+                    `\tdct:description ${main_description}` +
                     `\tskos:hasTopConcept`;
-
+            }
             let stout = header;
 
             if (voc_filename) {
@@ -74,6 +92,7 @@ if (config_data) {
                         let d = data[i];
                         let deep = getNotationDeep(d.notation);
                         let deepNext = deep;
+                        let titles = d.title.split('|');
 
                         // check the deep of the next record
                         if ((i + 1) < num) {
@@ -86,21 +105,35 @@ if (config_data) {
                             oldUrl = urlStack[urlStack.length - 1];
                             const newUrl = `n1:${d.id}`;
                             let body = `${newUrl}\n`;
+                            let pref_label ="";
+
+                            for (let i = 0; i<num_lang-1;i++){
+                                pref_label = pref_label +  `"${titles[i]}"@${voc.title[i].lang},\n\t`;
+                            }
+                            pref_label = pref_label +  `"${titles[num_lang-1]}"@${voc.title[num_lang-1].lang}`;
+
                             if (oldUrl === baseUrl)
                                 body = `${body}\t a skos:Concept;\n` +
                                     `\tskos:inScheme ${baseUrl};\n` +
                                     `\tskos:notation "${d.notation}";\n` +
                                     `\tskos:topConceptOf ${oldUrl};\n` +
-                                    `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
+                                    `\tskos:prefLabel ${pref_label}`;
                             else
                                 body = `${body}\t a skos:Concept;\n` +
                                     `\tskos:inScheme ${baseUrl};\n` +
                                     `\tskos:notation "${d.notation}";\n` +
                                     `\tskos:broader ${oldUrl};\n` +
-                                    `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
-                            if (d.description != "")
-                                body = body + `; \n\tskos:description "${d.description}"@${voc.title[0].lang}. \n`;
-                            else
+                                    `\tskos:prefLabel ${pref_label}`;
+
+                            if (d.description != "") {
+                                let descriptions = d.description.split('|');
+                                let desc = "";
+                                for (let i = 0; i < num_lang - 1; i++) {
+                                    desc = desc + `"${descriptions[i]}"@${voc.title[i].lang},\n\t`;
+                                }
+                                desc = desc + `"${descriptions[num_lang - 1]}"@${voc.title[num_lang - 1].lang}`;
+                                body = body + `; \n\tskos:definition ${desc}. \n`;
+                            }else
                                 body = body + `.\n`;
                             nodesStack.push(newUrl);
                             stout = `${stout}${body}`;
@@ -139,20 +172,34 @@ if (config_data) {
                             let oldUrl = urlStack[urlStack.length - 1];
                             const newUrl = `n1:${d.id}`;
                             let body = `${newUrl}\n`;
+                            let pref_label ="";
+                            for (let i = 0; i<num_lang-1;i++){
+                                pref_label = pref_label +  `"${titles[i]}"@${voc.title[i].lang},\n\t`;
+                            }
+                            pref_label = pref_label +  `"${titles[num_lang-1]}"@${voc.title[num_lang-1].lang}`;
+
                             if (oldUrl === baseUrl)
                                 body = `${body}\t a skos:Concept;\n` +
                                     `\tskos:inScheme ${oldUrl};\n` +
                                     `\tskos:notation "${d.notation}";\n` +
                                     `\tskos:topConceptOf ${oldUrl};\n` +
-                                    `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
+                                    `\tskos:prefLabel ${pref_label}`;
                             else
                                 body = `${body}\t a skos:Concept;\n` +
                                     `\tskos:inScheme ${baseUrl};\n` +
                                     `\tskos:notation "${d.notation}";\n` +
                                     `\tskos:broader ${oldUrl};\n` +
-                                    `\tskos:prefLabel "${d.title}"@${voc.title[0].lang}`;
-                            if (d.description != "")
-                                body = body + `; \n\tskos:description "${d.description}"@${voc.title[0].lang} `;
+                                    `\tskos:prefLabel ${pref_label}`;
+
+                            if (d.description != "") {
+                                let descriptions = d.description.split('|');
+                                let desc = "";
+                                for (let i = 0; i < num_lang - 1; i++) {
+                                    desc = desc + `"${descriptions[i]}"@${voc.title[i].lang},\n\t`;
+                                }
+                                desc = desc + `"${descriptions[num_lang - 1]}"@${voc.title[num_lang - 1].lang}`;
+                                body = body + `; \n\tskos:definition ${desc} `;
+                            }
 
                             bodyStack.push(body);
                             nodesStack.push(newUrl);
