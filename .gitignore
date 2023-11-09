@@ -34,5 +34,3 @@ testem.log
 Thumbs.db
 /dist_npm/**
 /dist_ttl/**
-/sample_data/**
-
