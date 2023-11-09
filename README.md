@@ -8,7 +8,7 @@ It's a pain to write ttl-files manually. But it's also a great idea to provide m
 
 So we support only a special use case of ttf/rdf: Hierarchical vocabularies. Here we use these attributes of rtf:
 * `title` (required): Multilingual name of the entry,
-* `description`: Multilingual description to give more information about the entry, and
+* `definition`: Multilingual description to give more information about the entry, and
 * `notation`: Semver-like enumeration mainly to describe the hierarchy, like `2.4.3`.  
 
 ## Workflow
@@ -46,12 +46,12 @@ Put all csv-files in that folder and write the `csv2ttl_config.json`.
 
 After that, edit the `package.json` to have short access to the commands: 
 ```json
-...
-    "scripts": {
-        "add": "addidcsv",
-        "csv": "csv2ttl"
-    }
-...
+{
+  "scripts": {
+    "add": "addidcsv",
+    "csv": "csv2ttl"
+  }
+}
 ```
 
 To run these scripts, use your IDE or type
