@@ -1,0 +1,45 @@
+{
+  "id": "itemformat",
+  "title": [
+    {
+      "lang": "de",
+      "value": "Vokabulare zur Beschreibung des Itemformates"
+    },
+    {
+      "lang": "en",
+      "value": "Descriptive vocabulary for itemformat"
+    }
+  ],
+  "csv_delimiter": ",",
+  "base": "https://w3id.org/iqb/v34",
+  "outDir": "dist_ttl",
+  "idPattern": "^[abcdefghprqstuvxyz]{1}[2345679]{1}[abcdefghprqstuvxyz]{1}$",
+  "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
+  "vocabularies": [
+    {
+      "id": "mu",
+      "title": [
+        {
+          "lang": "de",
+          "value": "Multilang Itemformat 3er Liste"
+        },
+        {
+          "lang": "en",
+          "value": "Multilang List of 3 Itemformat"
+        }
+      ],
+      "filenameSource": "multi_lang.csv",
+      "filenameTarget": "multi_lang.ttl",
+      "description": [
+        {
+          "lang": "de",
+          "value": ""
+        },
+        {
+          "lang": "en",
+          "value": ""
+        }
+      ]
+    }
+  ]
+}

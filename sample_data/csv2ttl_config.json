@@ -30,15 +30,15 @@
       ]
     },
     {
-      "id": "3e",
+      "id": "3i",
       "title": [
         {
           "lang": "de",
           "value": "Itemformat 3er Liste"
         }
       ],
-      "filenameSource": "3e.csv",
-      "filenameTarget": "3e_out.ttl",
+      "filenameSource": "3i.csv",
+      "filenameTarget": "3i_out.ttl",
       "description": [
         {
           "lang": "de",

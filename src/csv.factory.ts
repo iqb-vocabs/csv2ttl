@@ -6,6 +6,8 @@ export interface CsvData {
     title: string;
     description: string;
     id: string
+    title_en: string;
+    description_en: string;
 }
 
 function validHierarchy(notationCheckList: String[], newString:String):boolean{
@@ -156,7 +158,7 @@ export abstract class CsvFactory {
         const fs = require('fs');
         let returnValue = true;
         const parser = new json2csvParser({
-            fields: ['notation','title','description','id'],
+            fields: ['notation','title','description','id','title_en','description_en'],
             quote: '',
             delimiter: csvDelimiter
         });

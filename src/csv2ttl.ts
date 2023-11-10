@@ -44,15 +44,20 @@ if (config_data) {
 
             let num_lang = config_data.title.length;
             let main_title = "";
-
             let creator ="";
-            for (let i = 0; i<num_lang-1;i++){
-                main_title = main_title +`"${config_data.title[i].value} - ${voc.title[i].value}"@${voc.title[i].lang},\n\t`;
-                creator = creator + `"${config_data.creator}"@${voc.title[i].lang},\n\t`;
-            }
-            main_title = main_title +`"${config_data.title[num_lang-1].value} - ${voc.title[num_lang-1].value}"@${voc.title[num_lang-1].lang};\n`;
-            creator = creator + `"${config_data.creator}"@${voc.title[num_lang-1].lang};\n`;
 
+
+            main_title = main_title +`"${config_data.title[0].value} - ${voc.title[0].value}"@${voc.title[0].lang}`;
+            creator = creator + `"${config_data.creator}"@${voc.title[0].lang}`;
+            if (num_lang>1) {
+                //main_title = main_title.slice(0,-1);
+                //creator = creator.slice(0,-1);
+                main_title = main_title + `,\n\t"${config_data.title[1].value} - ${voc.title[1].value}"@${voc.title[1].lang};\n`;
+                creator = creator + `,\n\t"${config_data.creator}"@${voc.title[1].lang};\n`;
+            }else{
+                creator = creator + `;\n`;
+                main_title = main_title + `;\n`;
+            }
             if (voc.description[0].value === "")
                 footer = `${baseUrl}\n` +
                     `\ta skos:ConceptScheme;\n` +
@@ -65,6 +70,7 @@ if (config_data) {
                     main_description = main_description +`"${voc.description[i].value}"@${voc.description[i].lang},\n\t`;
                 }
                 main_description = main_description +`"${voc.description[num_lang-1].value}"@${voc.description[num_lang-1].lang};\n`;
+
                 footer = `${baseUrl}\n` +
                     `\ta skos:ConceptScheme;\n` +
                     `\tdct:creator ${creator}` +
@@ -92,7 +98,7 @@ if (config_data) {
                         let d = data[i];
                         let deep = getNotationDeep(d.notation);
                         let deepNext = deep;
-                        let titles = d.title.split('|');
+                       // let titles = d.title.split('|');
 
                         // check the deep of the next record
                         if ((i + 1) < num) {
@@ -106,12 +112,11 @@ if (config_data) {
                             const newUrl = `n1:${d.id}`;
                             let body = `${newUrl}\n`;
                             let pref_label ="";
-
-                            for (let i = 0; i<num_lang-1;i++){
-                                pref_label = pref_label +  `"${titles[i]}"@${voc.title[i].lang},\n\t`;
+                            pref_label = pref_label + `"${d.title}"@${voc.title[0].lang}`;
+                            if (num_lang>1) {
+                                pref_label = pref_label + `,\n\t"${d.title_en}"@${voc.title[1].lang}`;
                             }
-                            pref_label = pref_label +  `"${titles[num_lang-1]}"@${voc.title[num_lang-1].lang}`;
-
+                            
                             if (oldUrl === baseUrl)
                                 body = `${body}\t a skos:Concept;\n` +
                                     `\tskos:inScheme ${baseUrl};\n` +
@@ -126,13 +131,13 @@ if (config_data) {
                                     `\tskos:prefLabel ${pref_label}`;
 
                             if (d.description != "") {
-                                let descriptions = d.description.split('|');
+                             //   let descriptions = d.description.split('|');
                                 let desc = "";
-                                for (let i = 0; i < num_lang - 1; i++) {
-                                    desc = desc + `"${descriptions[i]}"@${voc.title[i].lang},\n\t`;
+                                desc = desc + `"${d.description}"@${voc.title[0].lang}`;
+                                if (d.description_en!= "" && num_lang>1) {
+                                    desc = desc + `,\n\t"${d.description_en}"@${voc.title[1].lang}`;
                                 }
-                                desc = desc + `"${descriptions[num_lang - 1]}"@${voc.title[num_lang - 1].lang}`;
-                                body = body + `; \n\tskos:definition ${desc}. \n`;
+                                body = body + `; \n\tskos:definition ${desc}.\n`;
                             }else
                                 body = body + `.\n`;
                             nodesStack.push(newUrl);
@@ -173,10 +178,10 @@ if (config_data) {
                             const newUrl = `n1:${d.id}`;
                             let body = `${newUrl}\n`;
                             let pref_label ="";
-                            for (let i = 0; i<num_lang-1;i++){
-                                pref_label = pref_label +  `"${titles[i]}"@${voc.title[i].lang},\n\t`;
+                            pref_label = pref_label + `"${d.title}"@${voc.title[0].lang}`;
+                            if (num_lang>1) {
+                                pref_label = pref_label + `,\n\t"${d.title_en}"@${voc.title[1].lang}`;
                             }
-                            pref_label = pref_label +  `"${titles[num_lang-1]}"@${voc.title[num_lang-1].lang}`;
 
                             if (oldUrl === baseUrl)
                                 body = `${body}\t a skos:Concept;\n` +
@@ -192,13 +197,12 @@ if (config_data) {
                                     `\tskos:prefLabel ${pref_label}`;
 
                             if (d.description != "") {
-                                let descriptions = d.description.split('|');
                                 let desc = "";
-                                for (let i = 0; i < num_lang - 1; i++) {
-                                    desc = desc + `"${descriptions[i]}"@${voc.title[i].lang},\n\t`;
+                                desc = desc + `"${d.description}"@${voc.title[0].lang}`;
+                                if (d.description_en!= "" && num_lang>1) {
+                                    desc = desc + `,\n\t"${d.description_en}"@${voc.title[1].lang}`;
                                 }
-                                desc = desc + `"${descriptions[num_lang - 1]}"@${voc.title[num_lang - 1].lang}`;
-                                body = body + `; \n\tskos:definition ${desc} `;
+                                body = body + `; \n\tskos:definition ${desc}`;
                             }
 
                             bodyStack.push(body);
