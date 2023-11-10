@@ -8,6 +8,39 @@ export interface CsvData {
     id: string
 }
 
+function validHierarchy(notationCheckList: String[], newString:String):boolean{
+    if (notationCheckList.length>0){
+        let lastString = notationCheckList[notationCheckList.length-1];
+        let stringList = lastString.split(".");
+        let newStringList = newString.split(".");
+        let lastLevels = (lastString.split(".")).length;
+        let newLevels = (newString.split(".")).length;
+
+        if (lastLevels == newLevels){  // Same level
+
+            if (Number(stringList[lastLevels-1]) < Number(newStringList[lastLevels-1])){
+                return true;
+            }else{
+                console.log(` case 1 first number ${Number(lastString[lastLevels-1])} - second number ${Number(newStringList[lastLevels-1])}`);
+                return false;
+            }
+        }else if (lastLevels < newLevels){       // Deeper level
+            if (newLevels > (lastLevels+1)) {
+                console.log(` case 2 first number ${Number(lastString[newLevels-1])} - second number ${Number(newStringList[lastLevels-1])}`);
+                return false;
+            }else
+                return true;
+        }else{ // Superficial level
+            if (Number(stringList[newLevels-1])<Number(newStringList[newLevels-1]))
+                return true;
+            else{
+                console.log(` case 3 first number ${Number(lastString[newLevels-1])} - second number ${Number(newStringList[lastLevels-1])}`);
+                return false;
+            }
+        }
+    }
+    return true;
+}
 export abstract class CsvFactory {
     public static load(dataFilename: string, csvDelimiter: string, allowEmptyId: boolean): CsvData[] | null {
         const fs = require('fs');
@@ -33,9 +66,11 @@ export abstract class CsvFactory {
                 const uniqueIdErrors: string[] = [];
                 const uniqueTitleErrors: string[] = [];
                 const uniqueNotationErrors: string[] = [];
+                const validHierarchyErrors: string[] = [];
                 let fatalError = false;
                 let recordNumber = 1;
                 const notationPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
+                const numericPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$/;
                 csvData.forEach(c => {
                     recordNumber += 1;
                     if (c.id) {
@@ -49,6 +84,12 @@ export abstract class CsvFactory {
                     }
                     if (c.notation) {
                         const notationMatches = c.notation.match(notationPattern);
+                        const numericMatches = c.notation.match(numericPattern);
+                        if (numericMatches){
+                            if (!validHierarchy(uniqueNotationList, c.notation)){
+                                validHierarchyErrors.push(`#${recordNumber}`);
+                            }
+                        }
                         if (notationMatches) {
                             if (uniqueNotationList.includes(c.notation)) {
                                 uniqueNotationErrors.push(`#${recordNumber}`);
@@ -58,6 +99,7 @@ export abstract class CsvFactory {
                         } else {
                             uniqueNotationErrors.push(`#${recordNumber}`);
                         }
+
                     }
                     if (c.title) {
                         const checkTitleExpression = `${c.notation || ''}-${c.title}`;
@@ -93,7 +135,10 @@ export abstract class CsvFactory {
                     }
                     fatalError = true;
                 }
-
+                if (validHierarchyErrors.length > 0) {
+                    console.log(`\x1b[0;31mERROR\x1b[0m Notations must be bigger than the prior notation and also can not increase the number of levels from the prior record to next by more than one level.'${dataFilename}' (${validHierarchyErrors.join(', ')})`);
+                    fatalError = true;
+                }
                 if (fatalError) {
                     csvData = null;
                     process.exitCode = 1;
