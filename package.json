@@ -18,6 +18,26 @@
     "url": "https://github.com/iqb-vocabs/csv2ttl/issues"
   },
   "homepage": "https://github.com/iqb-vocabs/csv2ttl#readme",
+  "eslintConfig": {
+    "extends": "@iqb/eslint-config",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+      "no-console": "off",
+      "class-methods-use-this": [
+        "error",
+        {
+          "exceptMethods": [
+            "getElementComponent",
+            "getNewOptionLabel",
+            "transform"
+          ]
+        }
+      ],
+      "import/export": 0
+    }
+  },
   "dependencies": {
     "@json2csv/plainjs": "^7.0.3",
     "ajv": "^8.12.0",
@@ -27,11 +47,9 @@
   "devDependencies": {
     "@iqb/eslint-config": "^2.1.1",
     "@types/node": "^20.4.4",
+    "eslint": "^8.54.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
-  },
-  "eslintConfig": {
-    "extends": "@iqb/eslint-config"
   },
   "bin": {
     "csv2ttl": "./dist_npm/csv2ttl.js",
