@@ -79,3 +79,16 @@ This json-file lists all vocabularies (i.e. csv-files) to convert and provides a
 | vocabularies  | Here you let the generator know what files should be included. Each voc must have an id and a title. Additionally, you can provide a description, a filename for the source and a filename for the target.                                                        |                           '.'                            |
 
 Before processing the config file it is validated. You'll get errors if it's malformed.
+
+### 5. Multi-language support
+From the 0.7.6 csv2ttl supports multilanguage. 
+The csv files should have the following format:
+
+```csv
+notation,title,description,id,title_en,description_en
+,geschlossen,,,closed,
+,halboffen,,,half open,
+,offen,,,open,
+```
+
+The configuration example for multi-language support is available sample_data/csv2ttl_configEn.json. 
