@@ -7,7 +7,7 @@ Use this package to transform vocabularies from csv files of specific format to 
 It's a pain to write ttl-files manually. But it's also a great idea to provide metadata vocabularies via ttl-files, especially if one uses [skos](https://www.w3.org/2004/02/skos/) or even [skohub](https://skohub.io/) to generate shiny html or handy json.
 
 So we support only a special use case of ttf/rdf: Hierarchical vocabularies. Here we use these attributes of rtf:
-* `title` (required): Multilingual name of the entry,
+* `prefLabel` (required): Multilingual name of the entry,
 * `definition`: Multilingual description to give more information about the entry, and
 * `notation`: Semver-like enumeration mainly to describe the hierarchy, like `2.4.3`.  
 
