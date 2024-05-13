@@ -4,6 +4,10 @@
     {
       "lang": "de",
       "value": "Vokabulare zur Beschreibung des Itemformates"
+    },
+    {
+      "lang": "en",
+      "value": "Descriptive vocabulary for itemformat"
     }
   ],
   "csv_delimiter": ",",
@@ -13,70 +17,27 @@
   "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "vocabularies": [
     {
-      "id": "en",
+      "id": "mu",
       "title": [
         {
           "lang": "de",
-          "value": "Itemformat Englisch Sek I"
+          "value": "Multilang Itemformat 3er Liste"
+        },
+        {
+          "lang": "en",
+          "value": "Multilang List of 3 Itemformat"
         }
       ],
-      "filenameSource": "en.csv",
-      "filenameTarget": "en_out.ttl",
-      "description": [
-        {
-          "lang": "de",
-          "value": "Itemformat Englisch Sek I and description modified and long text "
-        }
-      ]
-    },
-    {
-      "id": "3i",
-      "title": [
-        {
-          "lang": "de",
-          "value": "Itemformat 3er Liste"
-        }
-      ],
-      "filenameSource": "3i.csv",
-      "filenameTarget": "3i_out.ttl",
+      "filenameSource": "multi_lang.csv",
+      "filenameTarget": "multi_lang.ttl",
       "description": [
         {
           "lang": "de",
           "value": ""
-        }
-      ]
-    },
-    {
-      "id": "5e",
-      "title": [
+        },
         {
-          "lang": "de",
-          "value": "Itemformat 5er Liste"
-        }
-      ],
-      "filenameSource": "5e.csv",
-      "filenameTarget": "5e_out.ttl",
-      "description": [
-        {
-          "lang": "de",
-          "value": "Itemformat 5er Liste description"
-        }
-      ]
-    },
-    {
-      "id": "7e",
-      "title": [
-        {
-          "lang": "de",
-          "value": "Itemformat 7er Liste"
-        }
-      ],
-      "filenameSource": "7e.csv",
-      "filenameTarget": "7e_out.ttl",
-      "description": [
-        {
-          "lang": "de",
-          "value": "Itemformat 7er Liste description"
+          "lang": "en",
+          "value": ""
         }
       ]
     }

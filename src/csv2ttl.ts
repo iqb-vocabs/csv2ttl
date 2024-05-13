@@ -31,6 +31,7 @@ if (configData) {
 
   const stoutBase:string = '@prefix dct: <http://purl.org/dc/terms/>.\n' +
         '@prefix skos: <http://www.w3.org/2004/02/skos/core#>. \n' +
+        '@prefix dc: <http://purl.org/dc/elements/1.1/>.\n' +
         `@prefix n0: <${configData.base}`;
 
   configData.vocabularies.forEach((voc: VocabularyData) => {
@@ -61,6 +62,8 @@ if (configData) {
                     '\ta skos:ConceptScheme;\n' +
                     `\tdct:creator ${creator}` +
                     `\tdct:title ${mainTitle}` +
+                    `\tdc:title ${mainTitle}` +
+                    `\tdc:description ${mainTitle}` +
                     '\tskos:hasTopConcept';
       } else {
         let mainDescription = '';
