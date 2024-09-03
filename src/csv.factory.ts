@@ -16,10 +16,10 @@ require('fs');
 function validHierarchy(notationCheckList: string[], newString:string):boolean {
   if (notationCheckList.length > 0) {
     const lastString = notationCheckList[notationCheckList.length - 1];
-    const stringList = lastString.split('.');
-    const newStringList = newString.split('.');
-    const lastLevels = (lastString.split('.')).length;
-    const newLevels = (newString.split('.')).length;
+    const stringList = lastString.split(/[.\s]*/);
+    const newStringList = newString.split(/[.\s]*/);
+    const lastLevels = (lastString.split(/[.\s]*/)).length;
+    const newLevels = (newString.split(/[.\s]*/)).length;
 
     if (lastLevels === newLevels) { // Same level
       return Number(stringList[lastLevels - 1]) < Number(newStringList[lastLevels - 1]);
@@ -57,7 +57,8 @@ export abstract class CsvFactory {
         const validHierarchyErrors: string[] = [];
         let fatalError = false;
         let recordNumber = 1;
-        const notationPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
+        // const notationPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
+        const notationPattern = /^([A-Z])(\s([1-9]([0-9]*)*(\.[0-9]([0-9]*))*)*)$|^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
         const numericPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$/;
         csvData.forEach(c => {
           recordNumber += 1;

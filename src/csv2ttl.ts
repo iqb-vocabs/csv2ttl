@@ -11,7 +11,7 @@ if (process.argv[2]) {
 }
 
 function getNotationDeep(notation: string): number {
-  return (notation.split('.')).length;
+  return notation.split(/[.\s]*/).length;
 }
 
 const configData = ConfigFileFactory.load(dataFolder);

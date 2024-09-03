@@ -1,0 +1,33 @@
+{
+  "id": "itemformat",
+  "title": [
+    {
+      "lang": "de",
+      "value": "Vokabulare zur Beschreibung des Itemformates"
+    }
+  ],
+  "csv_delimiter": ",",
+  "base": "https://w3id.org/iqb/v34",
+  "outDir": "dist_ttl",
+  "idPattern": "^[abcdefghprqstuvxyz]{1}[2345679]{1}[abcdefghprqstuvxyz]{1}$",
+  "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
+  "vocabularies": [
+    {
+      "id": "new",
+      "title": [
+        {
+          "lang": "de",
+          "value": "New format"
+        }
+      ],
+      "filenameSource": "notation_charakter.csv",
+      "filenameTarget": "notation_charakter.ttl",
+      "description": [
+        {
+          "lang": "de",
+          "value": ""
+        }
+      ]
+    }
+  ]
+}
