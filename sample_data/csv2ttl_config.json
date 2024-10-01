@@ -13,70 +13,19 @@
   "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "vocabularies": [
     {
-      "id": "en",
+      "id": "new",
       "title": [
         {
           "lang": "de",
-          "value": "Itemformat Englisch Sek I"
+          "value": "New format"
         }
       ],
-      "filenameSource": "en.csv",
-      "filenameTarget": "en_out.ttl",
-      "description": [
-        {
-          "lang": "de",
-          "value": "Itemformat Englisch Sek I and description modified and long text "
-        }
-      ]
-    },
-    {
-      "id": "3i",
-      "title": [
-        {
-          "lang": "de",
-          "value": "Itemformat 3er Liste"
-        }
-      ],
-      "filenameSource": "3i.csv",
-      "filenameTarget": "3i_out.ttl",
+      "filenameSource": "notation_charakter.csv",
+      "filenameTarget": "notation_charakter.ttl",
       "description": [
         {
           "lang": "de",
           "value": ""
-        }
-      ]
-    },
-    {
-      "id": "5e",
-      "title": [
-        {
-          "lang": "de",
-          "value": "Itemformat 5er Liste"
-        }
-      ],
-      "filenameSource": "5e.csv",
-      "filenameTarget": "5e_out.ttl",
-      "description": [
-        {
-          "lang": "de",
-          "value": "Itemformat 5er Liste description"
-        }
-      ]
-    },
-    {
-      "id": "7e",
-      "title": [
-        {
-          "lang": "de",
-          "value": "Itemformat 7er Liste"
-        }
-      ],
-      "filenameSource": "7e.csv",
-      "filenameTarget": "7e_out.ttl",
-      "description": [
-        {
-          "lang": "de",
-          "value": "Itemformat 7er Liste description"
         }
       ]
     }

@@ -16,10 +16,10 @@ require('fs');
 function validHierarchy(notationCheckList: string[], newString:string):boolean {
   if (notationCheckList.length > 0) {
     const lastString = notationCheckList[notationCheckList.length - 1];
-    const stringList = lastString.split(/[.\s]*/);
-    const newStringList = newString.split(/[.\s]*/);
-    const lastLevels = (lastString.split(/[.\s]*/)).length;
-    const newLevels = (newString.split(/[.\s]*/)).length;
+    const stringList = lastString.split('.');
+    const newStringList = newString.split('.');
+    const lastLevels = (lastString.split('.')).length;
+    const newLevels = (newString.split('.')).length;
 
     if (lastLevels === newLevels) { // Same level
       return Number(stringList[lastLevels - 1]) < Number(newStringList[lastLevels - 1]);
@@ -30,6 +30,7 @@ function validHierarchy(notationCheckList: string[], newString:string):boolean {
   }
   return true;
 }
+
 export abstract class CsvFactory {
   static load(dataFilename: string, csvDelimiter: string, allowEmptyId: boolean): CsvData[] | null {
     let csvData: CsvData[] | null = null;
@@ -57,9 +58,9 @@ export abstract class CsvFactory {
         const validHierarchyErrors: string[] = [];
         let fatalError = false;
         let recordNumber = 1;
-        // const notationPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
-        const notationPattern = /^([A-Z])(\s([1-9]([0-9]*)*(\.[0-9]([0-9]*))*)*)$|^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
+        const notationPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
         const numericPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$/;
+        const specialPattern =/^([A-Z])(\s([1-9]([0-9]*)*(\.[0-9]([0-9]*))*)*)$/;
         csvData.forEach(c => {
           recordNumber += 1;
           if (c.id) {
@@ -74,12 +75,14 @@ export abstract class CsvFactory {
           if (c.notation) {
             const notationMatches = c.notation.match(notationPattern);
             const numericMatches = c.notation.match(numericPattern);
+            const specialMatches = c.notation.match(specialPattern);
+
             if (numericMatches) {
               if (!validHierarchy(uniqueNotationList, c.notation)) {
                 validHierarchyErrors.push(`#${recordNumber}`);
               }
             }
-            if (notationMatches) {
+            if (specialMatches || notationMatches) {
               if (uniqueNotationList.includes(c.notation)) {
                 uniqueNotationErrors.push(`#${recordNumber}`);
               } else {
@@ -88,6 +91,7 @@ export abstract class CsvFactory {
             } else {
               uniqueNotationErrors.push(`#${recordNumber}`);
             }
+            // TO DO specialMatches check for validHierarchy replaying each character for a number before
           }
           if (c.title) {
             const checkTitleExpression = `${c.notation || ''}-${c.title}`;
