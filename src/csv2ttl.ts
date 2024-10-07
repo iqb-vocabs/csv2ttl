@@ -2,6 +2,7 @@
 import fs = require('fs');
 import { ConfigFileFactory, VocabularyData } from './config-file.factory';
 import { CsvFactory } from './csv.factory';
+import {str} from "ajv";
 
 require('fs');
 
@@ -11,7 +12,11 @@ if (process.argv[2]) {
 }
 
 function getNotationDeep(notation: string): number {
-  return (notation.split('.')).length;
+  let firstLevel = notation.split(' ').length;
+  if (firstLevel > 1) {
+    return notation.split('.').length+1;
+  }
+  return Math.max(1,notation.split('.').length) ;
 }
 
 const configData = ConfigFileFactory.load(dataFolder);
@@ -97,14 +102,12 @@ if (configData) {
           urlStack.push(baseUrl);
           for (let i = 0; i < num; i++) {
             const d = data[i];
-            const deep = getNotationDeep(d.notation);
+            const deep = getNotationDeep(d.notation.toString().trim());
             let deepNext = deep;
-            // let titles = d.title.split('|');
-
             // check the deep of the next record
             if ((i + 1) < num) {
               const s = data[i + 1];
-              deepNext = getNotationDeep(s.notation);
+              deepNext = getNotationDeep(s.notation.toString().trim());
             } else {
               deepNext = 1;
             }
@@ -133,7 +136,6 @@ if (configData) {
               }
 
               if (d.description !== '') {
-                //   let descriptions = d.description.split('|');
                 let desc = '';
                 desc = `${desc}"${d.description}"@${voc.title[0].lang}`;
                 if (d.description_en !== '' && numLang > 1) {

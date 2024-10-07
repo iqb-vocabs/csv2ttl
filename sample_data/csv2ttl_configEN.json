@@ -4,6 +4,10 @@
     {
       "lang": "de",
       "value": "Vokabulare zur Beschreibung des Itemformates"
+    },
+    {
+      "lang": "en",
+      "value": "Descriptive vocabulary for itemformat"
     }
   ],
   "csv_delimiter": ",",
@@ -13,18 +17,26 @@
   "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "vocabularies": [
     {
-      "id": "new",
+      "id": "mu",
       "title": [
         {
           "lang": "de",
-          "value": "New format"
+          "value": "Multilang Itemformat 3er Liste"
+        },
+        {
+          "lang": "en",
+          "value": "Multilang List of 3 Itemformat"
         }
       ],
-      "filenameSource": "notation_charakter.csv",
-      "filenameTarget": "notation_charakter.ttl",
+      "filenameSource": "multi_lang.csv",
+      "filenameTarget": "multi_lang.ttl",
       "description": [
         {
           "lang": "de",
+          "value": ""
+        },
+        {
+          "lang": "en",
           "value": ""
         }
       ]
