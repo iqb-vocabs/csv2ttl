@@ -60,7 +60,7 @@ export abstract class CsvFactory {
         let recordNumber = 1;
         const notationPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
         const numericPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$/;
-        const specialPattern =/^([A-Z])(\s([1-9]([0-9]*)*(\.[0-9]([0-9]*))*)*)$/;
+        const specialPattern =/^([A-Z]+)(\s([0-9]([0-9]*)*(\.[0-9]([0-9]*))*)*)$/;
         csvData.forEach(c => {
           recordNumber += 1;
           if (c.id) {

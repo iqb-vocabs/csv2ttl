@@ -92,3 +92,11 @@ notation,title,description,id,title_en,description_en
 ```
 
 The configuration example for multi-language support is available sample_data/csv2ttl_configEn.json. 
+
+### 6. Notation
+The initial notation supported are:
+* Character: allows empty notation and characters, as 'I', 'II', ''. See examples sample_data/3i.csv and sample_data/5e.csv
+* Hierarchy: Semver-like enumeration mainly to describe the hierarchy, like `2.4.3`. See example sample_data/7e.csv 
+
+From the version 0.8.2 csv2ttl support the special notation 
+* Special (Character plus hierarchy): allows notation with a character plus Semver-like notation. like `S 2.4.3`. See example sample_data/notation_charakter.csv
