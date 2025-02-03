@@ -22,7 +22,8 @@ notation,title,description,id
 ,halboffen,,
 ,offen,,
 ```
-The first line and therefor the description of data structure is required. You see, that only the title is given.
+The first line and therefor the description of data structure is required. You see, that only the title is given. 
+See below the [notation](#notation) paragraph. 
 
 ### 2. Write csv2ttl_config.json
 There is one json-file to provide with some parameters for the generation process. The idea is, that one (git)-repository contains of multiple vocabularies describing one common issue. We call this repo a 'vocabulary-group'. The config file lists all vocabularies with id and name. 
@@ -80,7 +81,7 @@ This json-file lists all vocabularies (i.e. csv-files) to convert and provides a
 
 Before processing the config file it is validated. You'll get errors if it's malformed.
 
-### 5. Multi-language support
+## Multi-language support
 From the 0.7.6 csv2ttl supports multilanguage. 
 The csv files should have the following format:
 
@@ -91,12 +92,14 @@ notation,title,description,id,title_en,description_en
 ,offen,,,open,
 ```
 
-The configuration example for multi-language support is available sample_data/csv2ttl_configEn.json. 
+The configuration example for multi-language support is available sample_data/csv2ttl_configEN.json. 
 
-### 6. Notation
+## [Notation](#notation)
 The initial notation supported are:
 * Character: allows empty notation and characters, as 'I', 'II', ''. See examples sample_data/3i.csv and sample_data/5e.csv
 * Hierarchy: Semver-like enumeration mainly to describe the hierarchy, like `2.4.3`. See example sample_data/7e.csv 
 
 From the version 0.8.2 csv2ttl support the special notation 
-* Special (Character plus hierarchy): allows notation with a character plus Semver-like notation. like `S 2.4.3`. See example sample_data/notation_charakter.csv
+* Special (Character plus hierarchy): allows notation with a character plus Semver-like notation. like `S 2.4.3`.
+See example sample_data/notation_charakter.csv and its corresponding csv2ttl_configCA.json
+

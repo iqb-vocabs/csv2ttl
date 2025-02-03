@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import fs = require('fs');
+import { str } from 'ajv';
 import { ConfigFileFactory, VocabularyData } from './config-file.factory';
 import { CsvFactory } from './csv.factory';
-import {str} from "ajv";
 
 require('fs');
 
@@ -12,11 +12,11 @@ if (process.argv[2]) {
 }
 
 function getNotationDeep(notation: string): number {
-  let firstLevel = notation.split(' ').length;
+  const firstLevel = notation.split(' ').length;
   if (firstLevel > 1) {
-    return notation.split('.').length+1;
+    return notation.split('.').length + 1;
   }
-  return Math.max(1,notation.split('.').length) ;
+  return Math.max(1, notation.split('.').length);
 }
 
 const configData = ConfigFileFactory.load(dataFolder);
@@ -43,8 +43,7 @@ if (configData) {
     if (configData) {
       const vocFilename = fileList[ConfigFileFactory.getFilenameSource(voc).toUpperCase()];
       const outPath = `${outputFolder}/${ConfigFileFactory.getFilenameTarget(voc)}`;
-      const header = `${stoutBase}/${voc.id}/>. \n` +
-                `@prefix n1: <${configData.base}/${voc.id}/>. \n\n`;
+      const header = `${stoutBase}/${voc.id}/>. \n\n`;
       const baseUrl = 'n0:';
       let footer = '';
       // check if there is more than one lang
@@ -112,7 +111,7 @@ if (configData) {
               deepNext = 1;
             }
             oldUrl = urlStack[urlStack.length - 1];
-            const newUrl = `n1:${d.id}`;
+            const newUrl = `n0:${d.id}`;
             if (deepNext === deep || deepNext < deep) {
               let body = `${newUrl}\n`;
               let prefLabel = '';
