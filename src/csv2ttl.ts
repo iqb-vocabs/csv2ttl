@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import fs = require('fs');
-import { str } from 'ajv';
 import { ConfigFileFactory, VocabularyData } from './config-file.factory';
 import { CsvFactory } from './csv.factory';
 
@@ -68,6 +67,7 @@ if (configData) {
                     `\tdct:title ${mainTitle}` +
                     `\tdc:title ${mainTitle}` +
                     `\tdc:description ${mainTitle}` +
+                    '\tdct:license <https://creativecommons.org/publicdomain/zero/1.0/deed.de>;\n' +
                     '\tskos:hasTopConcept';
       } else {
         let mainDescription = '';
@@ -82,6 +82,7 @@ if (configData) {
                     `\tdct:creator ${creator}` +
                     `\tdct:title ${mainTitle}` +
                     `\tdct:description ${mainDescription}` +
+                    '\tdct:license <https://creativecommons.org/publicdomain/zero/1.0/deed.de>;\n' +
                     '\tskos:hasTopConcept';
       }
       let stout = header;
