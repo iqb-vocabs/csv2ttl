@@ -25,6 +25,7 @@ export interface ConfigData {
   outDir: string;
   idPattern: string;
   creator: string;
+  license: string;
   vocabularies: VocabularyData[];
 }
 require('fs');

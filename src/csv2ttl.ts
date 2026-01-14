@@ -53,7 +53,16 @@ if (configData) {
 
       mainTitle = `${mainTitle}"${configData.title[0].value} - ${voc.title[0].value}"@${voc.title[0].lang}`;
       creator = `${creator}"${configData.creator}"@${voc.title[0].lang}`;
-      if (numLang > 1) {
+      if (numLang === 5) {
+        mainTitle = `${mainTitle},\n\t"${configData.title[2].value} - ${voc.title[2].value}"@${voc.title[2].lang}` +
+            `,\n\t"${configData.title[3].value} - ${voc.title[3].value}"@${voc.title[3].lang}` +
+            `,\n\t"${configData.title[4].value} - ${voc.title[4].value}"@${voc.title[4].lang}` +
+            `,\n\t"${configData.title[1].value} - ${voc.title[1].value}"@${voc.title[1].lang};\n`;
+        creator = `${creator},\n\t"${configData.creator}"@${voc.title[2].lang}` +
+                            `,\n\t"${configData.creator}"@${voc.title[3].lang}` +
+                            `,\n\t"${configData.creator}"@${voc.title[4].lang}` +
+                            `,\n\t"${configData.creator}"@${voc.title[1].lang};\n`;
+      } else if (numLang === 2) {
         mainTitle = `${mainTitle},\n\t"${configData.title[1].value} - ${voc.title[1].value}"@${voc.title[1].lang};\n`;
         creator = `${creator},\n\t"${configData.creator}"@${voc.title[1].lang};\n`;
       } else {
@@ -76,13 +85,13 @@ if (configData) {
         }
         mainDescription = `${mainDescription}"${voc.description[numLang - 1].value}` +
                           `"@${voc.description[numLang - 1].lang};\n`;
-
+        const license = `${configData.license};\n`;
         footer = `${baseUrl}\n` +
                     '\ta skos:ConceptScheme;\n' +
                     `\tdct:creator ${creator}` +
                     `\tdct:title ${mainTitle}` +
                     `\tdct:description ${mainDescription}` +
-                    '\tdct:license <https://creativecommons.org/publicdomain/zero/1.0/deed.de>;\n' +
+                    `\tdct:license ${license}` +
                     '\tskos:hasTopConcept';
       }
       let stout = header;
@@ -113,13 +122,32 @@ if (configData) {
             }
             oldUrl = urlStack[urlStack.length - 1];
             const newUrl = `n0:${d.id}`;
+            let prefLabel = '';
+            prefLabel = `${prefLabel}"${d.title}"@${voc.title[0].lang}`;
+            if (numLang === 2) {
+              prefLabel = `${prefLabel},\n\t"${d.title_en}"@${voc.title[1].lang}`;
+            } else if (numLang > 2) {
+              prefLabel = `${prefLabel},\n\t"${d.title_fr}"@${voc.title[2].lang}` +
+                  `,\n\t"${d.title_it}"@${voc.title[3].lang}` +
+                  `,\n\t"${d.title_rm}"@${voc.title[4].lang}` +
+                  `,\n\t"${d.title_en}"@${voc.title[1].lang}`;
+            }
+            let desc = '';
+            desc = `${desc}"${d.description}"@${voc.title[0].lang}`;
+            if (d.description_fr !== '' && numLang > 2) {
+              desc = `${desc},\n\t"${d.description_fr}"@${voc.title[2].lang}`;
+            }
+            if (d.description_it !== '' && numLang > 2) {
+              desc = `${desc},\n\t"${d.description_it}"@${voc.title[3].lang}`;
+            }
+            if (d.description_rm !== '' && numLang > 2) {
+              desc = `${desc},\n\t"${d.description_rm}"@${voc.title[4].lang}`;
+            }
+            if (d.description_en !== '' && numLang > 1) {
+              desc = `${desc},\n\t"${d.description_en}"@${voc.title[1].lang}`;
+            }
             if (deepNext === deep || deepNext < deep) {
               let body = `${newUrl}\n`;
-              let prefLabel = '';
-              prefLabel = `${prefLabel}"${d.title}"@${voc.title[0].lang}`;
-              if (numLang > 1) {
-                prefLabel = `${prefLabel},\n\t"${d.title_en}"@${voc.title[1].lang}`;
-              }
 
               if (oldUrl === baseUrl) {
                 body = `${body}\t a skos:Concept;\n` +
@@ -136,11 +164,6 @@ if (configData) {
               }
 
               if (d.description !== '') {
-                let desc = '';
-                desc = `${desc}"${d.description}"@${voc.title[0].lang}`;
-                if (d.description_en !== '' && numLang > 1) {
-                  desc = `${desc},\n\t"${d.description_en}"@${voc.title[1].lang}`;
-                }
                 body = `${body}; \n\tskos:definition ${desc}.\n`;
               } else body = `${body}.\n`;
               nodesStack.push(newUrl);
@@ -175,11 +198,6 @@ if (configData) {
                                     5. Store the actual deep
                                 */
               let body = `${newUrl}\n`;
-              let prefLabel = '';
-              prefLabel = `${prefLabel}"${d.title}"@${voc.title[0].lang}`;
-              if (numLang > 1) {
-                prefLabel = `${prefLabel},\n\t"${d.title_en}"@${voc.title[1].lang}`;
-              }
 
               if (oldUrl === baseUrl) {
                 body = `${body}\t a skos:Concept;\n` +
@@ -196,11 +214,6 @@ if (configData) {
               }
 
               if (d.description !== '') {
-                let desc = '';
-                desc = `${desc}"${d.description}"@${voc.title[0].lang}`;
-                if (d.description_en !== '' && numLang > 1) {
-                  desc = `${desc},\n\t"${d.description_en}"@${voc.title[1].lang}`;
-                }
                 body = `${body}; \n\tskos:definition ${desc}`;
               }
 

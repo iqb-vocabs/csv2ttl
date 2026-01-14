@@ -9,6 +9,12 @@ export interface CsvData {
   id: string
   title_en: string;
   description_en: string;
+  title_fr: string;
+  description_fr: string;
+  title_it: string;
+  description_it: string;
+  title_rm: string;
+  description_rm: string;
 }
 
 require('fs');
@@ -60,7 +66,7 @@ export abstract class CsvFactory {
         let recordNumber = 1;
         const notationPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$|^([a-zA-Z]*)$/;
         const numericPattern = /^(([1-9][0-9]*)(\.[1-9][0-9]*)*)$/;
-        const specialPattern =/^([A-Z]+)(\s([0-9]([0-9]*)*(\.[0-9]([0-9]*))*)*)$/;
+        const specialPattern = /^([A-Z]+)(\s([0-9]([0-9]*)*(\.[0-9]([0-9]*))*)*)$/;
         csvData.forEach(c => {
           recordNumber += 1;
           if (c.id) {
@@ -153,7 +159,8 @@ export abstract class CsvFactory {
     let returnValue = true;
     // eslint-disable-next-line new-cap
     const parser = new json2csvParser({
-      fields: ['notation', 'title', 'description', 'id', 'title_en', 'description_en'],
+      fields: ['notation', 'title', 'description', 'id', 'title_en', 'description_en',
+        'title_fr', 'description_fr', 'title_it', 'description_it', 'title_rm', 'description_rm'],
       quote: '',
       delimiter: csvDelimiter
     });

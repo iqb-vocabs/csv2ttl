@@ -1,6 +1,6 @@
 {
   "name": "@iqb/csv2ttl",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "MIT",
   "description": "Generate ttl files for publishing metadata vocabularies from csv",
