@@ -77,12 +77,13 @@ This json-file lists all vocabularies (i.e. csv-files) to convert and provides a
 | base          | base-url to form the uri of the voc                                                                                                                                                                                                                               |                        *required*                        |
 | outDir        | target folder for the ttl-files                                                                                                                                                                                                                                   |                           '.'                            |
 | idPattern     | when the IDs are generated, an external lib `randex` is used. This parameter value is directly given to this lib and must be an regular expression. It's kind of tricky and the lib is not free of problems, so play around with it before setting the parameter. | '^\[abcdefghprqstuvxyz]\[2345679]\[abcdefghprqstuvxyz]$' |
+| license       | license of the vocabulary                                                                                                                                                                                                                                         |                          'CC0'                           |
 | vocabularies  | Here you let the generator know what files should be included. Each voc must have an id and a title. Additionally, you can provide a description, a filename for the source and a filename for the target.                                                        |                           '.'                            |
 
 Before processing the config file it is validated. You'll get errors if it's malformed.
 
 ## Multi-language support
-From the 0.7.6 csv2ttl supports multilanguage. 
+From the 0.7.6 csv2ttl supports multilanguage, german and english. 
 The csv files should have the following format:
 
 ```csv
@@ -90,6 +91,16 @@ notation,title,description,id,title_en,description_en
 ,geschlossen,,,closed,
 ,halboffen,,,half open,
 ,offen,,,open,
+```
+
+From the 0.9.0 csv2ttl supports Swiss languages in addition to Englisch.
+The csv files should have the following format:
+
+```csv
+notation,title,description,id,title_en,description_en,title_fr,description_fr,title_it,description_it,title_rm,description_rm
+1,rot,,f4y,red,,rouge,,rosso,,cotschen,
+2,blau,,v3x,blue,,bleu,,blu,,blau,
+3,gelb,,h2z,yellow,,jaune,,giallo,,mellen,
 ```
 
 The configuration example for multi-language support is available sample_data/csv2ttl_configEN.json. 
@@ -101,5 +112,5 @@ The initial notation supported are:
 
 From the version 0.8.2 csv2ttl support the special notation 
 * Special (Character plus hierarchy): allows notation with a character plus Semver-like notation. like `S 2.4.3`.
-See example sample_data/notation_charakter.csv and its corresponding csv2ttl_configCA.json
+See example in folder sample_data/notation-charakter.
 

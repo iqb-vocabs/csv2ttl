@@ -11,6 +11,7 @@
   "outDir": "dist_ttl",
   "idPattern": "^[abcdefghprqstuvxyz]{1}[2345679]{1}[abcdefghprqstuvxyz]{1}$",
   "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
+  "license": "<https://creativecommons.org/publicdomain/zero/1.0/deed.de>",
   "vocabularies": [
     {
       "id": "new",

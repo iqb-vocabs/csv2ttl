@@ -18,12 +18,12 @@ function getNotationDeep(notation: string): number {
 
 function getPrefLabel(d: any, voc: VocabularyData, numLang: number): string {
   const labels = [`"${d.title}"@${voc.title[0].lang}`];
-  if (numLang === 2) {
-    labels.push(`"${d.title_en}"@${voc.title[1].lang}`);
-  } else if (numLang > 2) {
+  if (numLang > 2) {
     labels.push(`"${d.title_fr}"@${voc.title[2].lang}`);
     labels.push(`"${d.title_it}"@${voc.title[3].lang}`);
     labels.push(`"${d.title_rm}"@${voc.title[4].lang}`);
+  }
+  if (numLang > 1) {
     labels.push(`"${d.title_en}"@${voc.title[1].lang}`);
   }
   return labels.join(',\n\t');
@@ -44,7 +44,9 @@ function getDefinition(d: any, voc: VocabularyData, numLang: number): string {
 
 function getConceptSchemeStrings(configData: ConfigData, voc: VocabularyData) {
   const numLang = configData.title.length;
-  const langIdx = [0, 2, 3, 4, 1].slice(0, numLang);
+  let langIdx;
+  if (numLang === 2) langIdx = [0, 1].slice(0, numLang);
+  else langIdx = [0, 2, 3, 4, 1].slice(0, numLang);
 
   const mainTitles = langIdx.map(i => `"${configData.title[i].value} - ${voc.title[i].value}"@${voc.title[i].lang}`
   ).join(',\n\t');
@@ -57,7 +59,6 @@ function getConceptSchemeStrings(configData: ConfigData, voc: VocabularyData) {
     mainDescription = voc.description.slice(0, numLang).map(d => `"${d.value}"@${d.lang}`
     ).join(',\n\t');
   }
-
   return { mainTitles, creators, mainDescription };
 }
 
@@ -89,12 +90,14 @@ if (configData) {
     const outPath = `${outputFolder}/${ConfigFileFactory.getFilenameTarget(voc)}`;
     const baseUrl = 'n0:';
     const { mainTitles, creators, mainDescription } = getConceptSchemeStrings(configData, voc);
-    const license = `${configData.license};\n`;
+    // eslint-disable-next-line max-len
+    const license = `${configData.license ? `${configData.license};\n` : '<https://creativecommons.org/publicdomain/zero/1.0/deed.de>;\n'}`;
 
     let footer = `${baseUrl}\n` +
         '\ta skos:ConceptScheme;\n' +
         `\tdct:creator ${creators};\n` +
         `\tdct:title ${mainTitles};\n${
+          // eslint-disable-next-line max-len
           mainDescription ? `\tdct:description ${mainDescription};\n` : `\tdc:title ${mainTitles};\n\tdc:description ${mainTitles};\n`
         }\tdct:license ${license}` +
         '\tskos:hasTopConcept';

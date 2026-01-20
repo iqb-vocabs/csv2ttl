@@ -56,6 +56,11 @@
       "description": "The ids are generated with the randexp lib, which takes a regular expression as input.",
       "default": "^[abcdefghprqstuvxyz][2345679][abcdefghprqstuvxyz]$"
     },
+    "license": {
+      "type": "string",
+      "description": "license of the vocabulary",
+      "default": "<https://creativecommons.org/publicdomain/zero/1.0/deed.de>"
+    },
     "vocabularies": {
       "type": "array",
       "items": {
