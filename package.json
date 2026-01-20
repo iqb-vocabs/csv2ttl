@@ -1,12 +1,18 @@
 {
   "name": "@iqb/csv2ttl",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "MIT",
   "description": "Generate ttl files for publishing metadata vocabularies from csv",
   "scripts": {
-    "add_ids": "ts-node src/addidcsv.ts sample_data",
-    "generate_ttl": "ts-node src/csv2ttl.ts sample_data",
+    "add_ids": "ts-node src/addidcsv.ts sample_data/deutsch",
+    "add_ids_en": "ts-node src/addidcsv.ts sample_data/deutsch-englisch",
+    "add_ids_ch": "ts-node src/addidcsv.ts sample_data/sprache-schweiz",
+    "add_ids_ca": "ts-node src/addidcsv.ts sample_data/notation-charakter",
+    "generate_ttl": "ts-node src/csv2ttl.ts sample_data/deutsch",
+    "generate_ttl_en": "ts-node src/csv2ttl.ts sample_data/deutsch-englisch",
+    "generate_ttl_ch": "ts-node src/csv2ttl.ts sample_data/sprache-schweiz",
+    "generate_ttl_ca": "ts-node src/csv2ttl.ts sample_data/notation-charakter",
     "prepare_publish": "rm -rf dist_npm/* && tsc && cp ./src/csv2ttl_config.schema.json ./dist_npm",
     "npm_publish": "npm publish --access public"
   },

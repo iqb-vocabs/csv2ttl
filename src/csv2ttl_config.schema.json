@@ -56,6 +56,11 @@
       "description": "The ids are generated with the randexp lib, which takes a regular expression as input.",
       "default": "^[abcdefghprqstuvxyz][2345679][abcdefghprqstuvxyz]$"
     },
+    "license": {
+      "type": "string",
+      "description": "license of the vocabulary",
+      "default": "<https://creativecommons.org/publicdomain/zero/1.0/deed.de>"
+    },
     "vocabularies": {
       "type": "array",
       "items": {
@@ -86,26 +91,6 @@
             "minItems": 1,
             "description": "Title of vocabulary"
           },
-          "title_en": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "lang": {
-                  "type": "string",
-                  "pattern": "^[a-z]+$",
-                  "description": "Language of the value"
-                },
-                "value": {
-                  "type": "string",
-                  "description": "Language of the value"
-                }
-              },
-              "required": ["lang", "value"]
-            },
-            "minItems": 1,
-            "description": "Title of vocabulary"
-          },
           "filenameSource": {
             "type": "string",
             "description": "Filename of the csv file of the vocabulary. Default: <id>.csv"
@@ -115,25 +100,6 @@
             "description": "Filename of the ttl file of the vocabulary. Default: <title>.ttl"
           },
           "description": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "lang": {
-                  "type": "string",
-                  "pattern": "^[a-z]+$",
-                  "description": "Language of the value"
-                },
-                "value": {
-                  "type": "string",
-                  "description": "Language of the value"
-                }
-              },
-              "required": ["lang", "value"]
-            },
-            "description": "Description of vocabulary"
-          },
-          "description_en": {
             "type": "array",
             "items": {
               "type": "object",

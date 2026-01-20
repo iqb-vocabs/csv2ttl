@@ -1,0 +1,82 @@
+{
+  "id": "colors",
+  "title": [
+    {
+      "lang": "de",
+      "value": "Farben"
+    },
+    {
+      "lang": "en",
+      "value": "Colors"
+    },
+    {
+      "lang": "fr",
+      "value": "Couleurs"
+    },
+    {
+      "lang": "it",
+      "value": "Colori"
+    },
+    {
+      "lang": "rm",
+      "value": "Colurs"
+    }
+  ],
+  "csv_delimiter": ",",
+  "base": "https://w3id.org/iqb/v00",
+  "outDir": "dist_ttl",
+  "idPattern": "^[abcdefghprqstuvxyz]{1}[2345679]{1}[abcdefghprqstuvxyz]{1}$",
+  "creator": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
+  "license": "<https://creativecommons.org/publicdomain/zero/1.0/deed.de>",
+  "vocabularies": [
+    {
+      "id": "cp",
+      "title": [
+        {
+          "lang": "de",
+          "value": "Grundfarben"
+        },
+        {
+          "lang": "en",
+          "value": "Primary colors"
+        },
+        {
+          "lang": "fr",
+          "value": "Couleurs primaires"
+        },
+        {
+          "lang": "it",
+          "value": "Colori primari"
+        },
+        {
+          "lang": "rm",
+          "value": "Colurs primaras"
+        }
+      ],
+      "filenameSource": "cp_ch.csv",
+      "filenameTarget": "cp_ch.ttl",
+      "description": [
+        {
+          "lang": "de",
+          "value": "Desc Grundfarben"
+        },
+        {
+          "lang": "en",
+          "value": ""
+        },
+        {
+          "lang": "fr",
+          "value": ""
+        },
+        {
+          "lang": "it",
+          "value": ""
+        },
+        {
+          "lang": "rm",
+          "value": ""
+        }
+      ]
+    }
+  ]
+}
